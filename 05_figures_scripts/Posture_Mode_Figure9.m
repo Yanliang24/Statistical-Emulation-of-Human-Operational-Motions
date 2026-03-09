@@ -1,10 +1,9 @@
 % clear 
-addpath('./MotionCode/')
-addpath('./02_Functions/')
+addpath('../02_Functions/')
 
 %% Visualization
-load ./01_Data/RWP_1_Outcome_300.mat
-load ./03_Metrics/posture_modes_12.mat
+load ../01_Data/RWP_1_Outcome_300.mat
+load ../03_Metrics/posture_modes_12.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 XM = mean_posture_seq(aligned);
@@ -49,7 +48,7 @@ for i =1:12
     plot3([x2 x2],[y1 y1],[z1 z2],'k','LineWidth',1) 
 end
 set(h,'Position',[100 100 480 420])
-exportgraphics(h,'posture_mode_12.pdf','Resolution',300) 
+exportgraphics(h,'../06_results/figures/posture_mode_12.pdf','Resolution',300) 
 
 for m = 1:M
     Xm = aligned{m};
@@ -81,10 +80,39 @@ ylabel('Cluster Number')
 legend(p2 ,'Mean')
 set(gca,'FontSize',16)
 AX = gca;
-exportgraphics(AX,'ModePlot12_Original_motion12.pdf','Resolution',300)
+exportgraphics(AX,'../06_results/figures/ModePlot12_Original_motion12.pdf','Resolution',300)
+
+for i = 1:5000
+    for j = 1:5000
+        if i<j
+            D(i,j) = dist_posture(squeeze(YI(:,i,:)),squeeze(YI(:,j,:)));
+        elseif i > j
+            D(i,j) = D(j,i);
+        elseif i == j;
+            D(i,j) = 0;
+        end       
+    end
+end
+
+dist = D;
+
+numClust = max(data2clusterNew);
+startIdx = 1;
+for i = 1:numClust
+    thisIdx = find(data2clusterNew==i);
+    [~,orderIdx] = sort(thisIdx, 'descend');
+    endIdx = startIdx + length(thisIdx) - 1;
+    sortIdx(startIdx:endIdx) = thisIdx(orderIdx);
+    startIdx = startIdx + length(thisIdx);
+end
+% trainThisIdx = find(trainData2clusterNew==numClust+1);
+thisIdx = find(data2clusterNew==0);
+endIdx = startIdx + length(thisIdx) - 1;
+sortIdx(startIdx:endIdx) = thisIdx;
+distSorted = dist(sortIdx,sortIdx);
 
 figure
 imagesc(distSorted)
 axis square
 AX = gca;
-exportgraphics(AX,'Sorted_Dist_Matrix_All_12.pdf','Resolution',300)
+exportgraphics(AX,'../06_results/figures/Sorted_Dist_Matrix_All_12.pdf','Resolution',300)
