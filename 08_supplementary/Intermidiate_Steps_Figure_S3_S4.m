@@ -1,13 +1,23 @@
-clear
-addpath('..\MotionCode\')
-addpath('..\02_Functions\')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Intermediate_Steps_Figure_S3_S4 - The code is to generate figure 3 and
+% figure 4 in Supplementary Material
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% clear
+addpath('../02_functions/')
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-load ..\01_Data\RWP_1_Outcome_300.mat
+load ../01_data/RWP_1_Outcome_300.mat
 
 %% Figure 3 ISTVF
-load .\Generation\Generation\Full\GenSeqFull_Motion1_ITVF_FPCA.mat
+load ../06_results/WorkerData/ISTVF/run_1.mat
 [Cre Zre] = PCAReconstruction(Sf,Uf,Mf,UdZ,MuZ);
 [Xre,Yre,Cmre] = ISTVF_to_posture(Cre,V_ref,W_ref,mpos);
 
@@ -78,8 +88,7 @@ exportgraphics(f5,'ISHTVF_Generation_F.pdf','Resolution',300)
 
 
 %% Figure 4 SIEM
-load ..\06_Result\WorkerData\ISTVF\run_1.mat
-load .\Generation\Generation\Full\GenSeqFull_Motion1_SIEM_FPCA.mat
+load ../06_results/WorkerData/SIEM/run_1.mat
 
 [Cre Zre] = PCAReconstruction(Sf,Uf,Mf,UdZ,MuZ);
 

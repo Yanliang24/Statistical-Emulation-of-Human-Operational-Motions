@@ -1,8 +1,19 @@
-clear
-addpath('..\MotionCode\')
-addpath('..\02_Functions\')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% PCA_Details_Figure_S1_S2 - The code is to generate figure 1 and
+% figure 2 in Supplementary Material
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load ..\01_Data\RWP_1_Outcome_300.mat
+% clear
+addpath('../02_functions/')
+
+load ../01_data/RWP_1_Outcome_300.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 %% Suplementray Figure 1
@@ -58,7 +69,7 @@ for i = 1:3
         end
     end
 end
-exportgraphics(ff,'PCA_direction.pdf','Resolution',300)
+exportgraphics(ff,'../06_results/figures/PCA_direction.pdf','Resolution',300)
 
 %% 1c
 Ty = size(CIS, 1);
@@ -80,7 +91,7 @@ f3 = figure;
 DrawSkeletonSequenceAction_label(skeleton_data_0,30,'r','b',16, 1, -2*1, 'Original', 0:300);
 DrawSkeletonSequenceAction_label(skeleton_data_PCA,30,'r','k',16, 1, -2*2, {'PCA','recons-','truction'});
 set(gcf,'Position',[100 100 900 350])
-exportgraphics(f3,'PCA_reconstruction.pdf','Resolution',300) 
+exportgraphics(f3,'../06_results/figures/PCA_reconstruction.pdf','Resolution',300) 
 
 %% Suplementray Figure 1
 %% Full FPCA
@@ -96,7 +107,7 @@ xlabel('Number of Eigenvectors')
 ylabel('Eigenvalue')
 set(gca,'FontSize',18)
 ax = gca;
-exportgraphics(f4,'Eigenvalue_FPCA.pdf','Resolution',300) 
+exportgraphics(f4,'../06_results/figures/Eigenvalue_FPCA.pdf','Resolution',300) 
 
 %% 2b
 f5 = figure;
@@ -116,7 +127,7 @@ title('$\beta_{3}^{(1)}$','FontSize',16)
 
 xlabel(h1,'Time $t$','FontSize',16,'interpreter','latex')
 set(gcf,'Position',[100 100 750 420])
-exportgraphics(f5,'FPCA_Direction.pdf','Resolution',300) 
+exportgraphics(f5,'../06_results/figures/FPCA_Direction.pdf','Resolution',300) 
 
 
 %% 2c
@@ -148,5 +159,5 @@ hL.Location = 'northoutside';
 xlabel(h,'Time $t$','Interpreter','latex','FontSize',16)
 ylabel(h,'PCA coefficient function','Interpreter','latex','FontSize',16)
 set(f6,'Position',[100 100 1100 250]) 
-exportgraphics(f6,'FPCA_H_reconstruction.pdf','Resolution',300) 
+exportgraphics(f6,'../06_results/figures/FPCA_H_reconstruction.pdf','Resolution',300) 
 
