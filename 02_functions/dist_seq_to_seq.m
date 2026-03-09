@@ -1,0 +1,7 @@
+function [d] = dist_seq_to_seq(posture_seq1, posture_seq2)
+    T = size(posture_seq1, 2);
+    dot_products = sum(posture_seq1 .* posture_seq2, 3);
+    dot_products = max(min(dot_products, 1), -1);
+    d = sum(acos(dot_products), 'all') / T;
+end
+    

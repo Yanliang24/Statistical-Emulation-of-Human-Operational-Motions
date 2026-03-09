@@ -1,0 +1,76 @@
+%clear all
+
+addpath('../MotionCode/')
+addpath('../02_Functions/')
+addpath('../03_Metrics/')
+num_runs = 10;
+num_sim = 100;
+%Random Setting
+rng(123456)
+
+for r = 1:num_runs
+    Result = struct();
+    Result.SimulatedData = cell(1, num_sim); % 5 subclasses
+    Result.metrics = zeros(1, 11);      % 11 metrics
+    
+    %% Load data
+    filename = sprintf('../01_Data/MotionNew_Outcome_800.mat');   
+    load(filename, 'X','tree') 
+    M = size(X,2);
+    [~,Ty,~] = size(X{1});
+    
+    %% Compute cross-sectional mean and variance
+    for t = 1:Ty
+        mpost = squeeze(X{1}(:,t,:));
+        nIter = 25;
+        for n = 1:nIter
+            for m = 1:M
+                X_mt = squeeze(X{m}(:, t, :)); 
+                V(:,m,:) = InverseExp_At_Posture(mpost,X_mt);
+            end
+            mpost = Exp_At_Posture(mpost, squeeze(mean(V, 2)));
+            lik(n) = sum(V(:).^2);
+        end
+        Mpos(:,t,:) = mpost;
+        
+        for m = 1:M
+            X_mt = squeeze(X{m}(:, t, :)); 
+            V(:,m,:) = InverseExp_At_Posture(mpost,X_mt);
+        end
+        for i = 1:20
+            MPost(i,:,t) = mean(squeeze(V(i,:,:)));
+            Cpost(i,:,:) = squeeze(V(i,:,:))'*squeeze(V(i,:,:))/(M-1);
+        end
+        Cpos{t} = Cpost;
+    end
+    
+    %% Generation
+    for k = 1:num_sim
+        for t = 1:Ty
+            for i = 1:20               
+                Ct = squeeze(Cpos{t}(i,:,:));
+                try
+                    V_new(i,:) = mvnrnd(MPost(i,:,t),Ct,1);
+                catch 
+                    [VV,D] = eig(Ct);  
+                    Ct_new = VV*max(D,0)/VV;
+                    V_new(i,:) = mvnrnd(MPost(i,:,t),Ct_new,1);
+                end
+            end
+            X_new(:,t,:) = Exp_At_Posture(squeeze(Mpos(:,t,:)),V_new);
+        end
+        Xnew{k} = X_new;
+    end
+
+    Result.SimulatedData = Xnew;
+    
+    %% Evaluation
+    load('../04_Models/posture_modes_12.mat','posturemode')
+    load('../04_Models/Estimated_ROW_New.mat', 'KernelVMF')
+
+    Result.metrics = evaluation(X, Xnew, tree, KernelVMF, posturemode);
+
+    %% Save
+    save_path = sprintf('../06_Result/ExerciseData/PWI/run_%d.mat', r);
+    save(save_path, 'Result');
+end
