@@ -1,8 +1,19 @@
-%clear all
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LevelOneSimulation_SIEM_IG - The code is to generate first level
+% simulation(as ground truth) using SIEM/IG model described in Sec. 5.4
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-addpath('.\MotionCode\')
-addpath('.\02_Functions\')
-addpath('.\03_Metrics\')
+%clear 
+
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 1;
 num_sim = 1000;
 %Random Setting
@@ -15,7 +26,7 @@ for r = 1:num_runs
     Result.params = struct();
     for s = 1:5
         %% Load data
-        filename = sprintf('./01_Data/RWP_%d_Outcome_300.mat', s);   
+        filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
         X = aligned;   
         M = size(X,2);
@@ -55,6 +66,6 @@ for r = 1:num_runs
     end
 
     %% Save
-    save_path = sprintf('./06_Result/TwoLevelSimulation/LevelOne/SIEM_IG_run_%d.mat', r);
+    save_path = sprintf('../06_results/TwoLevelSimulation/LevelOne/SIEM_IG_run_%d.mat', r);
     save(save_path, 'Result');
 end

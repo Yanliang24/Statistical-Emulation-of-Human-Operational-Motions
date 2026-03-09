@@ -1,8 +1,19 @@
-addpath('..\MotionCode\')
-addpath('..\02_Functions')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Sensitive_Analysis_SIEM - The code is to perform sensitive analysis
+% described in Supplementray Material
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% clear
+addpath('../02_functions')
 
 %% Load Data
-load ..\01_Data\RWP_1_Outcome_300.mat 
+load ../01_data/RWP_1_Outcome_300.mat 
 
 X = aligned;
 Ty = size(X{1}, 2);
@@ -65,7 +76,7 @@ RE(1,2) = mean(dpca_n);
 RE(1,3) = abs(RE(1,1)-RE(1,2));
 
 %% MPCA
-addpath('..\..\tensor_toolbox-v3.6\')
+addpath('../tensor_toolbox-v3.6/')
 [Zf,Mf,Uf] = SeqMPCA(Cm,75);
 CMPCA = double(ReMPCA(Zf,Uf,Mf));
 CMPCA = permute(CMPCA,[2,3,1]);

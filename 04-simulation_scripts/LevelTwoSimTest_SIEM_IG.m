@@ -1,13 +1,25 @@
-addpath('.\MotionCode\')
-addpath('.\02_Functions\')
-addpath('.\03_Metrics\')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LevelTwoSimulation_SIEM_IG - The code is to generate and test the second
+% level simulation(as ground truth) described in Sec. 5.4
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 1;
 num_sim = 1000;
 %Random Setting
 rng(123456)
 
 %% Load Data
-load ./06_Result/TwoLevelSimulation/LevelOne/SIEM_IG_run_1.mat
+load ../06_results/TwoLevelSimulation/LevelOne/SIEM_IG_run_1.mat
 
 X0 = Result.SimulatedData;
 [S,M] = size(X0);
@@ -107,4 +119,4 @@ end
 
 beep
 %% Save
-save('./06_Result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat')
+save('../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat')

@@ -1,8 +1,18 @@
-%clear all
-
-addpath('./MotionCode/')
-addpath('./02_Functions/')
-addpath('./03_Metrics/')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Exercise_ISTVF_Gaussian - The code is to simulate sequences
+% using ISTVF/SequantialPCA/MVG model descripbed in Sec. 4.3 using Exercise
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%clear 
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 num_sim = 100;
 %Random Setting
@@ -15,7 +25,7 @@ for r = 1:num_runs
     Result.params = struct();
 
     %% Load data
-    filename = sprintf('./01_Data/MotionNew_Outcome_800.mat');   
+    filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
     load(filename, 'X','tree')  
     M = size(X,2);
     [~,Ty,~] = size(X{1});
@@ -50,12 +60,12 @@ for r = 1:num_runs
     Result.params.fPCcom = Uf;
     
     %% Evaluation
-    load('./04_Models/posture_modes_12.mat','posturemode')
-    load('./04_Models/Estimated_ROW_New.mat', 'KernelVMF')
+    load('../03_metrics/posture_modes_12.mat','posturemode')
+    load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
 
     Result.metrics = evaluation(X, Xnew, tree, KernelVMF,posturemode);
 
     %% Save
-    save_path = sprintf('./06_Result/ExerciseData/ISTVF/run_%d.mat', r);
+    save_path = sprintf('../06_results/ExerciseData/ISTVF/run_%d.mat', r);
     save(save_path, 'Result');
 end
