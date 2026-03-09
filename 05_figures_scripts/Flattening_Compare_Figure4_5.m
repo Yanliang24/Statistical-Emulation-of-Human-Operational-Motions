@@ -6,7 +6,7 @@
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
 % Operational Motions in Industrial Environments
 %
-% Copyright ©2021 2026 Yanliang Chen
+% Copyright ©2026 Yanliang Chen
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

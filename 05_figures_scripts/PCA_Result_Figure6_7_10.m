@@ -6,7 +6,7 @@
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
 % Operational Motions in Industrial Environments
 %
-% Copyright ©2021 2026 Yanliang Chen
+% Copyright ©2026 Yanliang Chen
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -224,7 +224,7 @@ set(gca,'Fontsize',14)
 legend('$d_1=5$','$d_1=10$','Interpreter','latex')
 xlabel('Selection of $d_2$','Interpreter','latex')
 ylabel('Normalized Shape Error','Interpreter','latex')
-exportgraphics(f6,'SeqPCA_shape_error_over_d2.pdf','Resolution',300)
+exportgraphics(f6,'../06_results/figures/SeqPCA_shape_error_over_d2.pdf','Resolution',300)
 
 %% Figure 10c
 f7 = figure;
@@ -236,9 +236,8 @@ title('$/alpha$ vs $/tilde{/alpha}$','Interpreter','latex')
 exportgraphics(f7,'pvalue_d2_originalVSreconstruction.pdf','Resolution',300)
 
 
-%% Table 1
-clear 
-load ./01_Data/RWP_1_Outcome_300.mat
+%% Table 1 
+load ../01_Data/RWP_1_Outcome_300.mat
 
 [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(aligned);
 [Ty,M,~] = size(CIS);
@@ -349,3 +348,5 @@ end
 Result(4,1) = D1;
 Result(4,2) = D2;
 Result(4,3) =  mean(dm_vae);
+
+table1 = table(Result);
