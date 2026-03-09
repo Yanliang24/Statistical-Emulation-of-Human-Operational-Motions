@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ANND - The code is to compute average nearest neighbor distance between two datasets
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function D = ANND(X0, X1)
 
 n1 = size(X0,2);
@@ -8,5 +18,6 @@ for i = 1:n2
     end
     dm(i) = min(dmj);
 end
+
 
 D = mean(dm);
