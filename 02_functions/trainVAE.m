@@ -1,8 +1,15 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% trainVAE - The code is to train VAE for spatial dimension reduction
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function model = trainVAE(XData, opts)
-%TRAINVAE Train a simple VAE on XData and save the model.
-%
-%   model = trainVAE(XData, opts)
-%
+
 % INPUTS:
 %   XData : [N x D] matrix (N samples, D features)
 %   opts  : struct with optional fields:
@@ -148,3 +155,4 @@ function opts = setfieldifmissing(opts,field,val)
         opts.(field) = val;
     end
 end
+
