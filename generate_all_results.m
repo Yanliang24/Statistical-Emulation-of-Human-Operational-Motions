@@ -1,3 +1,16 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% generate_all_results - The code is to generate the tables for the
+% evaluation results, Table 2 to 6 in the main manuscript and Table 1 to 3
+% in the Supplementary Material
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 clear
 
 numMeth = 7;
@@ -14,7 +27,7 @@ Methods = {'ISTVF', 'SIEM','PWI','VAR','GP','LSTM','GCN_Trans'};
 for m = 1:numMeth
     meth = Methods{m};
     if m <= 4
-        path = strcat('./06_Result/WorkerData/', meth,'/');        
+        path = strcat('./06_results/WorkerData/', meth,'/');        
         runData = zeros(numRun, 5, numMetric);
         for r = 1:numRun
             fileName = fullfile(path, sprintf('run_%d.mat', r));
@@ -24,7 +37,7 @@ for m = 1:numMeth
         % Compute mean across the 10 runs
         finalMeans = squeeze(mean(runData, 1));
     else 
-        path = strcat('./06_Result/WorkerData/Other/');
+        path = strcat('./06_results/WorkerData/Other/');
         fileName = strcat(path, meth, '_Worker_Results.mat');
         data = load(fileName);
         finalMeans = zeros(5, numMetric);        
@@ -44,7 +57,7 @@ end
 for m = 1:numMeth
     meth = Methods{m};
     if m <= 4
-        path = strcat('./06_Result/ExerciseData/', meth,'/');        
+        path = strcat('./06_results/ExerciseData/', meth,'/');        
         runData = zeros(numRun, 1, numMetric);
         for r = 1:numRun
             fileName = fullfile(path, sprintf('run_%d.mat', r));
@@ -54,7 +67,7 @@ for m = 1:numMeth
         % Compute mean across the 10 runs
         finalMeans = squeeze(mean(runData, 1))';
     else 
-        path = strcat('./06_Result/ExerciseData/Other/');
+        path = strcat('./06_results/ExerciseData/Other/');
         fileName = strcat(path, meth, '_Exercise_Results.mat');
         data = load(fileName);     
         finalMeans = data.All_Results.mean_score;

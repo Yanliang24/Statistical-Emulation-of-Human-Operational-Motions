@@ -28,7 +28,7 @@ for i = 1:length(scripts_to_run)
     end
     
     % (Keeping only our loop variables)
-    clearvars -except scripts_to_run i; 
+    clearvars -except scripts_to_run i table1; 
     restTime = 300;
     fprintf('Script finished. Cooling down for %d minutes...\n', round(restTime/60));       
     pause(restTime);
