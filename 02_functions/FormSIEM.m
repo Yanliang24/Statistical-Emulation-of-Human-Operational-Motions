@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FormISTVF - The code is to generate SIEM functions from the sequences data
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [Cm, V_ref, W_ref,Ref_posture] = FormSIEM(X)
 
 [~,M] = size(X);
@@ -32,5 +42,6 @@ for t=1:Ty
 end
     Cm(:,m,:) = reshape(Ct,[Ty,40]);
 end
+
 
 end
