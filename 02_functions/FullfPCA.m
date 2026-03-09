@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% FullfPCA - The code is to perform FPCA on each scalar function
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [U,VarX,Xmean,Score,epdf,ex,Sigma] = FullfPCA(X,d)
     [~,~,K] = size(X);
     for k = 1:K
@@ -18,4 +28,5 @@ function [U,VarX,Xmean,Score,epdf,ex,Sigma] = FullfPCA(X,d)
         end
         Sigma(:,k) = diag(Sk);
     end
+
 end
