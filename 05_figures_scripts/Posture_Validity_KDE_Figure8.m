@@ -1,8 +1,19 @@
-clear 
-addpath('03_Metrics/')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Posture_Validity_KDE_Figure8 - The code is to generate figure 8
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-load ./01_Data/RWP_all_Outcome_300.mat
-% load ./01_Data/MotionNew_Outcome_800.mat
+% clear 
+addpath('../03_metrics/')
+
+load ../01_data/RWP_all_Outcome_300.mat
+% load ../01_Data/MotionNew_Outcome_800.mat
 
 if tree(1,1) == 1                       % Exercise Motion
     I = 10;
@@ -86,7 +97,7 @@ c = colorbar;
 c.FontSize = 16;
 
 if tree(1,1) == 21    
-    exportgraphics(f,'Kernel_Dist.pdf')
+    exportgraphics(f,'../06_results/figures/Kernel_Dist.pdf')
     save('Estimated_ROW.mat','KernelVMF')
 elseif tree(1,1) == 1
     save('Estimated_ROW_New.mat','KernelVMF')
