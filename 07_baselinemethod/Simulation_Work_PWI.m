@@ -1,7 +1,18 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Work_PWI - The code is to simulate sequences
+% using baseline model PWI descripbed in Sec. 5.2 using Worker
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clear
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 num_sim = 100;
 %Random Setting
@@ -13,7 +24,7 @@ for r = 1:num_runs
     Result.metrics = zeros(5, 11);      % 11 metrics
     for s = 1:5
         %% Load data
-        filename = sprintf('../01_Data/RWP_%d_Outcome_300.mat', s);   
+        filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
         X = aligned;   
         M = size(X,2);
@@ -65,13 +76,13 @@ for r = 1:num_runs
         Result.SimulatedData(s,:) = Xnew;
         
         %% Evaluation
-        load('../04_Models/posture_modes_12.mat','posturemode')
-        load('../04_Models/Estimated_ROW.mat', 'KernelVMF')
+        load('../03_metrics/posture_modes_12.mat','posturemode')
+        load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
 
         Result.metrics(s,:) = evaluation(X, Xnew, tree, KernelVMF, posturemode);
     end
 
     %% Save
-    save_path = sprintf('../06_Result/WorkerData/PWI/run_%d.mat', r);
+    save_path = sprintf('../06_results/WorkerData/PWI/run_%d.mat', r);
     save(save_path, 'Result');
 end

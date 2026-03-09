@@ -1,8 +1,18 @@
-%clear; clc;
-
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Work_GP - The code is to simulate sequences
+% using baseline model Gaussian Process descripbed in Sec. 5.2 using Worker
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 % Random Setting
 rng(123456)
@@ -21,7 +31,7 @@ numSims = 100;
 trainSteps = 3000;
 
 for s = 1:5
-    filename = sprintf('../01_Data/RWP_%d_Outcome_300.mat', s);   
+    filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
     load(filename, 'aligned','tree')
 
     [~,Ty,~] = size(aligned{1});
@@ -47,8 +57,8 @@ for s = 1:5
             Cnew(:,i,:) = Ct;
         end
         Xn = SIEM_to_posture(Cnew,V_ref,W_ref,mpos);
-        load('../04_Models/posture_modes_12.mat','posturemode')
-        load('../04_Models/Estimated_ROW.mat', 'KernelVMF')
+        load('../03_metrics/posture_modes_12.mat','posturemode')
+        load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
         result_runs(r,:) = evaluation(aligned, Xn, tree, KernelVMF, posturemode);
         Xnew(r,:) = Xn;
         
@@ -63,5 +73,5 @@ for s = 1:5
     clear trainedModel ZZ aligned;
 end
 
-save('../06_Result/WorkerData/Other/GP_Worker_Results.mat', 'All_Results');
+save('../06_results/WorkerData/Other/GP_Worker_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');

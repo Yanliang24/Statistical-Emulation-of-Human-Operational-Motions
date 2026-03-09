@@ -1,8 +1,18 @@
-% clear; clc;
-
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Work_GCN_Trans - The code is to simulate sequences
+% using baseline model GCN_Transformer descripbed in Sec. 5.2 using Worker
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 % Random Setting
 rng(123456)
@@ -20,7 +30,7 @@ numRuns = 10;
 
 for s = 1:5
 
-    filename = sprintf('../01_Data/RWP_%d_Outcome_300.mat', s);   
+    filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
     load(filename, 'aligned','tree')
     % 1. Load Dataset
     numSeqs = size(aligned,2);
@@ -42,8 +52,8 @@ for s = 1:5
         resCell = cell(pyResults);
         sim_data = cellfun(@(x) double(x), resCell, 'UniformOutput', false);
         
-        load('../04_Models/posture_modes_12.mat','posturemode')
-        load('../04_Models/Estimated_ROW.mat', 'KernelVMF')
+        load('../03_metrics/posture_modes_12.mat','posturemode')
+        load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
         result_runs(r,:) = evaluation(aligned, sim_data, tree, KernelVMF, posturemode);
         Xnew(r,:) = sim_data;
         
@@ -58,5 +68,5 @@ for s = 1:5
     clear aligned trainedModel pyCond matCond;
 end
 
-save('../06_Result/WorkerData/Other/GCN_Trans_Worker_Results.mat', 'All_Results');
+save('../06_results/WorkerData/Other/GCN_Trans_Worker_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');

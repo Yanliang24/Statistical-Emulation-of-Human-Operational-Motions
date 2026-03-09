@@ -1,8 +1,19 @@
-% clear; clc;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Exercise_GCN_Trans - The code is to simulate sequences
+% using baseline model GCN_Transformer descripbed in Sec. 5.2 using Exercise
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
+%clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 % Random Setting
 rng(123456)
@@ -18,7 +29,7 @@ bridge = py.importlib.import_module('GCN_Transformer_workflow');
 % py.importlib.reload(bridge);
 numRuns = 10;
 
-filename = sprintf('../01_Data/MotionNew_Outcome_800.mat');   
+filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
 load(filename, 'X','tree')
 % 1. Load Dataset
 numSeqs = size(X,2);
@@ -40,8 +51,8 @@ for r = 1:numRuns
     resCell = cell(pyResults);
     sim_data = cellfun(@(x) double(x), resCell, 'UniformOutput', false);
     
-    load('../04_Models/posture_modes_12.mat','posturemode')
-    load('../04_Models/Estimated_ROW_New.mat', 'KernelVMF')
+    load('../03_metrics/posture_modes_12.mat','posturemode')
+    load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
     result_runs(r,:) = evaluation(X, sim_data, tree, KernelVMF, posturemode);
     Xnew(r,:) = sim_data;
     
@@ -54,5 +65,5 @@ All_Results.simulated = Xnew;
 % Clear dataset-specific variables before next file
 clear X trainedModel pyCond matCond;
 
-save('../06_Result/ExerciseData/Other/GCN_Trans_Exercise_Results.mat', 'All_Results');
+save('../06_results/ExerciseData/Other/GCN_Trans_Exercise_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');

@@ -1,8 +1,19 @@
-%clear all
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Exercise_VAR - The code is to simulate sequences
+% using baseline model VAR descripbed in Sec. 5.2 using Exercise
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
 num_runs = 10;
 num_sim = 100;
 %Random Setting
@@ -14,7 +25,7 @@ for r = 1:num_runs
     Result.metrics = zeros(1, 11);      % 11 metrics
 
     %% Load data
-    filename = sprintf('../01_Data/MotionNew_Outcome_800.mat');   
+    filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
     load(filename, 'X','tree') 
     M = size(X,2);
     [~,Ty,~] = size(X{1});
@@ -58,11 +69,11 @@ for r = 1:num_runs
     Result.SimulatedData = Xnew;
     
     %% Evaluation
-    load('../04_Models/posture_modes_12.mat','posturemode')
-    load('../04_Models/Estimated_ROW_New.mat', 'KernelVMF')
+    load('../03_metrics/posture_modes_12.mat','posturemode')
+    load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
 
     Result.metrics = evaluation(X, Xnew, tree, KernelVMF,posturemode);
 
-    save_path = sprintf('../06_Result/ExerciseData/VAR/run_%d.mat', r);
+    save_path = sprintf('../06_results/ExerciseData/VAR/run_%d.mat', r);
     save(save_path, 'Result');
 end

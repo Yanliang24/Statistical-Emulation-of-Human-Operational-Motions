@@ -1,8 +1,18 @@
-%clear; clc;
-
-addpath('../MotionCode/')
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Simulation_Exercise_LSTM - The code is to simulate sequences
+% using baseline model LSTM descripbed in Sec. 5.2 using Exercise
+% dataset
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%clear
+addpath('../02_functions/')
+addpath('../03_metrics/')
 num_runs = 10;
 % Random Setting
 rng(123456)
@@ -17,7 +27,7 @@ end
 bridge = py.importlib.import_module('LSTM_workflow');
 % py.importlib.reload(bridge);
 
-filename = sprintf('../01_Data/MotionNew_Outcome_800.mat');   
+filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
 load(filename, 'X','tree')
 
 %% Train Model
@@ -27,7 +37,7 @@ trained_model = bridge.train_motion_model(X, num_epoch = int32(1000));
 % Temporary storage for the 10 runs of this specific dataset
 result_runs = zeros(num_runs, 11);
 
-%% Loop over Simulations
+%% Loop over Simulationssim_data{m} = re_normalize(sim_data{m});
 for r = 1:num_runs
     fprintf('  - Run %d/10 (Seed: %d)\n', r, r);
     % Run simulation with specific seed
@@ -36,10 +46,11 @@ for r = 1:num_runs
     sim_data = cell(py_sims);
     for m = 1:length(sim_data)
         sim_data{m} = double(sim_data{m});
+        sim_data{m} = re_normalize(sim_data{m});
     end
 
-    load('../04_Models/posture_modes_12.mat','posturemode')
-    load('../04_Models/Estimated_ROW_New.mat', 'KernelVMF')
+    load('../03_metrics/posture_modes_12.mat','posturemode')
+    load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
     result_runs(r,:) = evaluation(X, sim_data, tree, KernelVMF, posturemode);
     Xnew(r,:) = sim_data;
 end
@@ -54,5 +65,5 @@ fprintf('Cleaning up dataset ...\n');
 clear X trained_model py_sims sim_data result_runs;
 
 % 6. Final Save
-save('../06_Result/ExerciseData/Other/LSTM_Exercise_Results_1.mat', 'All_Results');
+save('../06_results/ExerciseData/Other/LSTM_Exercise_Results_1.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');
