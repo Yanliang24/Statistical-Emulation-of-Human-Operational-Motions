@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ISTVF_toposture - The code is to map ISTVF functions back to posture space
+% ISTVF_to_posture - The code is to map ISTVF functions back to posture space
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -26,3 +26,4 @@ function [X,Y,Cm] = ISTVF_to_posture(CIS,V_ref,W_ref,mpos)
     end
 
 end
+
