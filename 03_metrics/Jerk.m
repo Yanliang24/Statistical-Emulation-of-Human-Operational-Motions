@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Jerk - The code is to compute jerk of a posture_seq
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function J = Jerk(posture_seq)
 
     [N, T, D] = size(posture_seq);
@@ -22,3 +32,4 @@ function J = Jerk(posture_seq)
         J(i,:,:) = TV(i+2,:,:) - 2*TV(i+1,:,:) + TV(i,:,:);
     end
 end
+

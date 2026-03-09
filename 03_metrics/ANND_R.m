@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ANND_R - The code is to compute average nearest neighbor distance of roughness distance between two datasets
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [D, Dmin, DD]= ANND_R(X0, X1)
 
 n1 = size(X0,2);
@@ -18,4 +28,5 @@ end
 
 D = mean(min(dr,[],2));
 Dmin = min(dr,[],2);
+
 DD = dr;

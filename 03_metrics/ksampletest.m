@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% ksampletest - The code is to two-sample test using distance matrix D
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [p,T,T0] = ksampletest(D,Na,Nb,MaxItr)
 
     T0 = (2*sum(D(1:Na,Na+1:Na+Nb),"all")/(Na*Nb)-sum(D(1:Na,1:Na),"all")/(Na*Na)-sum(D(Na+1:Na+Nb,Na+1:Na+Nb),"all")/(Nb*Nb)); 
@@ -10,4 +20,5 @@ function [p,T,T0] = ksampletest(D,Na,Nb,MaxItr)
         T(i) = (2*sum(d(1:Na,Na+1:Na+Nb),"all")/(Na*Nb)-sum(d(1:Na,1:Na),"all")/(Na*Na)-sum(d(Na+1:Na+Nb,Na+1:Na+Nb),"all")/(Nb*Nb)); 
     end
     
+
     p = sum(T>T0)/MaxItr;

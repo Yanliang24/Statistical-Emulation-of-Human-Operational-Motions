@@ -1,3 +1,14 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MTVF - The code is to generate the MTVF functions from posture sequences
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function [T_V] = MTVF(posture_seq)
 
     T = size(posture_seq, 2);
@@ -21,4 +32,6 @@ function [T_V] = MTVF(posture_seq)
         T_V(i,:,:) = V_par;
     end
 
+
 end
+
