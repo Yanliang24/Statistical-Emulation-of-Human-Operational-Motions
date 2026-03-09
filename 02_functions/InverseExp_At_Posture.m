@@ -1,6 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% InverseExp_At_Posture - The code is to generate figure 4 and
-% figure 5
+% InverseExp_At_Posture - The code is to compute the shooting vector V of Posture1 at the tangent space of Posture
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -18,3 +17,4 @@ theta = acos(c_theta);
 d = theta ./ sin(theta);
 d(theta == 0 | isnan(d)) = 1; 
 V = d .* (Posture1 - c_theta .* Posture);
+
