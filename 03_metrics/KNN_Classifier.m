@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% KNN_Classifier - The code is to perform knn classification on X and Xnew 
+% KNN_Classifier - The code is to perform knn classification of Xnew using X as training set 
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -17,4 +17,5 @@ end
 
 [~, inx] = mink(L0,k);
 L = mode(Label(inx));
+
 
