@@ -1,11 +1,14 @@
-function [V, theta] = get_coordinate(X1,X2)
-
-% Inputs:
-%   X1: [1x3] normalized parent vector (P -> J) 
-%   X2: [1x3] normalized child vector (J -> C)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% get_coordinate - The code is to compute the ralative coordination of two landmarks
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
 %
-% Output:
-%   V: [1x3] child vector in parent’s local frame
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [V, theta] = get_coordinate(X1,X2)
 
     % z-axis = parent vector
     z_axis = X1; % already normalized
@@ -30,4 +33,5 @@ function [V, theta] = get_coordinate(X1,X2)
     r = norm(V); % should be ~1 since v is normalized
     theta(1) = acosd(V(3) / r);         % Polar angle from z-axis
     theta(2) = atan2d(V(2), V(1));  % Azimuth in x-y plane
+
 end
