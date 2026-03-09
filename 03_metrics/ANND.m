@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% ANND - The code is to compute average nearest neighbor distance between two datasets
+% ANND - The code is to compute average nearest neighbor distance of shape distance between two datasets
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -21,3 +21,4 @@ end
 
 
 D = mean(dm);
+
