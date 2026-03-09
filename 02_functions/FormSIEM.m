@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% FormISTVF - The code is to generate SIEM functions from the sequences data
+% FormSIEM - The code is to generate SIEM functions from the sequences data
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -45,3 +45,4 @@ end
 
 
 end
+
