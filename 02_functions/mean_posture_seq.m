@@ -1,6 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % mean_posture_sequence - The code is to compute the mean posture sequence
 % 
+% Implemented based on
+%   Park, C., Noh, S.D. and Srivastava, A.
+%       Data science for motion and time analysis with modern motion sensor data. 
+%       Operations Research. 
+% 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
 % Operational Motions in Industrial Environments

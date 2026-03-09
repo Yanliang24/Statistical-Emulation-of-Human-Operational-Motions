@@ -1,6 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % ParallelTransport_Posture - The code is to parallel transport vector V from tangent space as Posture to Posture 1
 % 
+% Implemented based on
+%   Park, C., Noh, S.D. and Srivastava, A.
+%       Data science for motion and time analysis with modern motion sensor data. 
+%       Operations Research. 
+% 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
 % Operational Motions in Industrial Environments
