@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Acceleration - The code is to compute acceleration from a posture_seq
+% Acceleration - The code is to compute acceleration of a posture_seq
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -32,4 +32,5 @@ function A = Acceleration(posture_seq)
         A(i,:,:) = TV(i+1,:,:) - TV(i,:,:);
     end
 end
+
 
