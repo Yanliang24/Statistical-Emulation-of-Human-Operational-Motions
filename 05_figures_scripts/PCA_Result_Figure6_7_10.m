@@ -12,9 +12,9 @@
 
 %clear 
 
-addpath('../02_Functions/')
-addpath('../03_Metrics/')
-load ../01_Data/RWP_1_Outcome_300.mat
+addpath('../02_functions/')
+addpath('../03_metrics/')
+load ../01_data/RWP_1_Outcome_300.mat
 
 [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(aligned);
 [Ty,M,~] = size(CIS);
@@ -31,7 +31,6 @@ CIre = PCAReconstruction(S,Us,Ms,UdZ,MuZ);
 
 %% MPCA
 addpath('../tensor_toolbox-v3.6/')
-addpath('../../tensor_toolbox-v3.6/')
 [Zf,Mf,Uf] = SeqMPCA(CIS,85);
 
 CMPCA = double(ReMPCA(Zf,Uf,Mf));
@@ -237,7 +236,7 @@ exportgraphics(f7,'pvalue_d2_originalVSreconstruction.pdf','Resolution',300)
 
 
 %% Table 1 
-load ../01_Data/RWP_1_Outcome_300.mat
+load ../01_data/RWP_1_Outcome_300.mat
 
 [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(aligned);
 [Ty,M,~] = size(CIS);

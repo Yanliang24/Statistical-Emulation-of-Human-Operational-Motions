@@ -1,11 +1,20 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% qqplot_figure13 - The code is to generate figure 13
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 clear
-addpath('./MotionCode/')
-addpath('./02_Functions/')
+addpath('../02_functions/')
 
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 %% ISTVF/IG
-load ./06_Result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
+load ../06_result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
 
 i=1;
 figure(100)
@@ -36,7 +45,7 @@ set(gca,'FontSize',16)
 
 %% SIEM/IG
 clear x1 x2 x3 y1 y2 y3 xmax xmin
-load ./06_Result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
+load ../06_result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
 i=1;
 figure(200)
 hold on;
@@ -65,4 +74,4 @@ ylabel(t,'Loglikelihood of Second Level Simulations $/hat{/alpha_i}$','FontSize'
 LGD = legend({'Test quantiles','{/it IG}','{/it MVG}','PWI'},'Orientation','horizontal');
 LGD.Layout.Tile = 'north';
 set(f,"Position",[50 50 500 560])
-exportgraphics(f,'qqplot_test.pdf','Resolution',300) 
+exportgraphics(f,'../06_results/figures/qqplot_test.pdf','Resolution',300) 

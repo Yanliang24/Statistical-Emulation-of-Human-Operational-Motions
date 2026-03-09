@@ -1,9 +1,20 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Posture_Mode_Figure9 - The code is to generate figure 9
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % clear 
-addpath('../02_Functions/')
+addpath('../02_functions/')
 
 %% Visualization
-load ../01_Data/RWP_1_Outcome_300.mat
-load ../03_Metrics/posture_modes_12.mat
+load ../01_data/RWP_1_Outcome_300.mat
+load ../03_metrics/posture_modes_12.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 XM = mean_posture_seq(aligned);

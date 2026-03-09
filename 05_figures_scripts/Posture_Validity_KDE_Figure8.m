@@ -98,7 +98,7 @@ c.FontSize = 16;
 
 if tree(1,1) == 21    
     exportgraphics(f,'../06_results/figures/Kernel_Dist.pdf')
-    save('Estimated_ROW.mat','KernelVMF')
+    save('../03_metrics/Estimated_ROW.mat','KernelVMF')
 elseif tree(1,1) == 1
-    save('Estimated_ROW_New.mat','KernelVMF')
+    save('../03_metrics/Estimated_ROW_New.mat','KernelVMF')
 end
