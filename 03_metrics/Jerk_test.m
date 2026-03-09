@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Jerk_test - The code is to compute jerk energy of a dataset
+% Jerk_test - The code is to compute jerk energy of dataset X
 % 
 % This script is part of the reproducibility package for the paper:
 % Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
@@ -17,3 +17,4 @@ for i = 1:I
 end
 
 S = mean(Si(Si<100));
+
