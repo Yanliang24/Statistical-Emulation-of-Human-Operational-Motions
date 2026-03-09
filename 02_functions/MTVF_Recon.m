@@ -1,4 +1,14 @@
-function [Re_posture] = Reconstrunction_PostureSeq(Transport_V, posture_0)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MTVF_Recon - The code is to map MTVF functions back to posture space
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function [Re_posture] = MTVF_Recon(Transport_V, posture_0)
 
 T = size(Transport_V, 1)+1;
 
@@ -18,5 +28,6 @@ for i = 2:T
     end
     Re_posture(:,i,:) = P;
 end
+
 
 end
