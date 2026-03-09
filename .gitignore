@@ -1,0 +1,8 @@
+# Ignore MATLAB internal files
+*.asv
+*.slxc
+*.mex*
+
+# Ignore large data (if you are hosting data elsewhere)
+*.mat
+*.fig
