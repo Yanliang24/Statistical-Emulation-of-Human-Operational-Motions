@@ -1,3 +1,13 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Acceleration - The code is to compute acceleration from a posture_seq
+% 
+% This script is part of the reproducibility package for the paper:
+% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
+% Operational Motions in Industrial Environments
+%
+% Copyright ©2026 Yanliang Chen
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function A = Acceleration(posture_seq)
 
     [N, T, D] = size(posture_seq);
@@ -22,3 +32,4 @@ function A = Acceleration(posture_seq)
         A(i,:,:) = TV(i+1,:,:) - TV(i,:,:);
     end
 end
+
