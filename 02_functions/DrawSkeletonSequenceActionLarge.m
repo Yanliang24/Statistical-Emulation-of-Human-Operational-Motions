@@ -1,4 +1,18 @@
-function h=DrawSkeletonSequenceActionLarge_SKKU(skeleton_bis,k,Ec,Lc,fs,varargin)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% --- SOURCE & ATTRIBUTION ---
+% Original Author: Park, C.
+% Provided by: Park, C.
+% 
+% Reference:Park, C., Noh, S.D. and Srivastava, A.
+%           Data science for motion and time analysis with modern motion sensor data. 
+%           Operations Research. 
+%
+% --- USAGE IN THIS STUDY ---
+% This function is slightly modified for formatting and used to visulize motion sequences (Figure 5, 6, 11, and 12)
+% in the paper: "Statistical Emulations of Human Operational Motions in Industrial Environments" (2026).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+function h=DrawSkeletonSequenceActionLarge(skeleton_bis,k,Ec,Lc,fs,varargin)
     %skeleton_bis contains the skeleton
     if nargin > 5,
         ss = varargin{1};
