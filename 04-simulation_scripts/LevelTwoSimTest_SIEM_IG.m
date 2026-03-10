@@ -116,6 +116,5 @@ for s = 1:S
     disp(['Motion ', num2str(s),' completed']);
 end
 
-beep
 %% Save
 save('../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat')

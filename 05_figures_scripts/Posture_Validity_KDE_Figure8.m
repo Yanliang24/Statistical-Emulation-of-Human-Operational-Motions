@@ -12,7 +12,15 @@
 % clear 
 addpath('../03_metrics/')
 
-load ../01_data/RWP_all_Outcome_300.mat
+%% Worker Data
+X = [];
+for s = 1:5
+    filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
+    load(filename, 'aligned','tree')
+    X = [X, aligned];
+end
+
+%% Exercise Data
 % load ../01_Data/MotionNew_Outcome_800.mat
 
 if tree(1,1) == 1                       % Exercise Motion
