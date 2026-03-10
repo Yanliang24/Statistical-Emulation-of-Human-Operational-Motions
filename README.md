@@ -10,7 +10,7 @@ Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human Operation
 1.MATLAB
 
 -  Tested on version R2024a 
--  Required Toolboxes: Curve Fitting, Statistics and Machine Learning              
+-  Required Toolboxes: Deep Learning, Statistics and Machine Learning, Econometrics, Communication              
 
 2.This project uses the MATLAB\-to\-Python interface for the baseline method implemtation.. 
 
