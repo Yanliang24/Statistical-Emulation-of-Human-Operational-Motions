@@ -10,7 +10,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [Xnew] = re_normalize(X)
-    [N, T, K] = size(X,2);
+    [N, T, K] = size(X);
     Xnew = zeros(N,T,K);
     for t = 1:T
         Xt = squeeze(X(:,t,:));

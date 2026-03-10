@@ -49,13 +49,14 @@ for s = 1:5
         sim_data = cell(py_sims);
         for m = 1:length(sim_data)
             sim_data{m} = double(sim_data{m});
+            sim_data{m} = re_normalize(sim_data{m});
         end
 
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
         result_runs(r,:) = evaluation(aligned, sim_data, tree, KernelVMF, posturemode);
         Xnew(r,:) = sim_data;
-        sim_data{m} = re_normalize(sim_data{m});
+        
     end
     
     % 5. Store Summary and Clean Up

@@ -10,7 +10,7 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%clear
+clear
 
 addpath('../02_functions/')
 addpath('../03_metrics/')
@@ -37,7 +37,7 @@ for r = 1:num_runs
         [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(X);
         Result.CenteredData(s,:) = Xc;
         %% PCA
-        D1 = 5;
+        D1 = 4;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
     
         %% Full FPCA

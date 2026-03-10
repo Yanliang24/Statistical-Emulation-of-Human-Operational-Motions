@@ -23,7 +23,7 @@ function A = Acceleration(posture_seq)
         if i==1
             V_par = V;
         else
-        V_par = ParallelTransport_Posture_1(X1, V, X0);
+        V_par = ParallelTransport_Posture(X1, V, X0);
         end
         TV(i,:,:) = V_par;
     end

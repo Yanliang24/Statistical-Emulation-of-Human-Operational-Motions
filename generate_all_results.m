@@ -68,7 +68,11 @@ for m = 1:numMeth
         finalMeans = squeeze(mean(runData, 1))';
     else 
         path = strcat('./06_results/ExerciseData/Other/');
-        fileName = strcat(path, meth, '_Exercise_Results.mat');
+        if m == 6
+            fileName = strcat(path, meth, '_Exercise_Results_2.mat');
+        else
+            fileName = strcat(path, meth, '_Exercise_Results.mat');
+        end
         data = load(fileName);     
         finalMeans = data.All_Results.mean_score;
     end

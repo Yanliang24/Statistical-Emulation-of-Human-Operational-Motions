@@ -37,7 +37,7 @@ for r = 1:num_runs
         [Cm,V_ref,W_ref,mpos] = FormSIEM(X);
     
         %% PCA
-        D1 = 5;
+        D1 = 4;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
     
         %% Full FPCA
