@@ -9,13 +9,12 @@ Chen, Y, Srivastava, A., and Park, C., (in press) Statistical Emulations of Huma
  **Prerequisites** 
 
 
-&nbsp;&nbsp;&nbsp;&nbsp; 1.MATLAB
+1.MATLAB
 
 -  Tested on version R2024a 
--  Required Toolboxes: Curve Fitting, Statistics and Machine Learning  
--  Optional Toolboxes: tensor\_toolbox\-v3.6 for MPCA related figures and tables. Download from                
+-  Required Toolboxes: Curve Fitting, Statistics and Machine Learning              
 
-&nbsp;&nbsp;&nbsp;&nbsp; 2.This project uses the MATLAB\-to\-Python interface for the baseline method implemtation.. 
+2.This project uses the MATLAB\-to\-Python interface for the baseline method implemtation.. 
 
 -  Python Version: 3.9  
 -  Required Packages: 'numpy==1.24.3' , 'torch: 2.7.0', 'gpflow: 2.9.0', 'tensorflow: 2.13.0' 
