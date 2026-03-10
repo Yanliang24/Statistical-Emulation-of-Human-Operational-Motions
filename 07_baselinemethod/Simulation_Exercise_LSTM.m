@@ -65,5 +65,5 @@ fprintf('Cleaning up dataset ...\n');
 clear X trained_model py_sims sim_data result_runs;
 
 % 6. Final Save
-save('../06_results/ExerciseData/Other/LSTM_Exercise_Results_1.mat', 'All_Results');
+save('../06_results/ExerciseData/Other/LSTM_Exercise_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');

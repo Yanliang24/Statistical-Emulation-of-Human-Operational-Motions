@@ -14,9 +14,8 @@
 addpath('../02_functions/')
 addpath('../03_metrics/')
 num_runs = 1;
-num_sim = 1000;
 %Random Setting
-rng(12345)
+rng(1234)
 
 %% Load Data
 load ../06_results/TwoLevelSimulation/LevelOne/SIEM_IG_run_1.mat
