@@ -37,7 +37,11 @@ The following packages and functions must be downloaded and added to the MATLAB 
 -  *`03_metrics/`* \- Evaluation metrics and pre\-computed model (e.g., clustering results and kernel density). 
 -  *`04_simulation_scripts/`* \- Individual simulation execution scripts for different datasets.
 -  *`05_figure_scripts/`* \- Individual execution scripts to generate figures and tables.
--  *`06_results/`* \- Output directory for `.mat` files and generated figures. Currently empty due to the size limit.
+-  *`06_results/`* \- [Empty]Output directory for `.mat` files and generated figures.
+        * `../WorkerData/`: Subfolder for `.mat` files of the Worker dataset results.
+        * `../exerciseData/`: Subfolder for `.mat` files of the Exercise dataset results.
+        * `../TwoLevelSimulation/`: Subfolder for `.mat` files of the two level simulation results.
+        * `../figures/`: Subfolder for exported `.pdf` visualizations.
 -  *`07_baselinemethod/`* \- Implementations and wrappers for comparison methods. 
 -  *`08_supplementary/`* \- Scripts for figures and tables in the Supplementary Information.
 -  *`CreateVideos.m`* \- Additional tool for creating videos from the skeleton data. 
