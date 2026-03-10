@@ -14,7 +14,7 @@ addpath('../02_functions/')
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 %% ISTVF/IG
-load ../06_result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
+load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
 
 i=1;
 figure(100)
@@ -39,13 +39,12 @@ nexttile(1)
 hold on;plot(x1,x1,'k-','Linewidth',2);plot(x1,y1,'ro','MarkerSize',10);plot(x2,y2,'b+','MarkerSize',10);plot(x3,y3,'c.','MarkerSize',10);
 x_limits = xlim;
 ylim(x_limits)
-xlim([-96 -92.75]);ylim([-96 -92.75])
 title({'Level One Simulation:', '{/it IS-TVF/SequentialPCA/IG}'}, 'interpreter','latex')
 set(gca,'FontSize',16)
 
 %% SIEM/IG
 clear x1 x2 x3 y1 y2 y3 xmax xmin
-load ../06_result/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
+load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
 i=1;
 figure(200)
 hold on;
