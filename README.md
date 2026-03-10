@@ -53,7 +53,12 @@ The processed data are **not included** due to their significant file size (>2GB
 To reproduce the results presented in the paper, the full simulation pipeline must be executed locally.
 
 -  To re\-run the simulations from scratch: Run *`run_all_simulations.m.`* 
--  To generate the figures and tables exactly as they appear in the paper using the provided pre\-computed data: Run *`generate_all_results.m`*, *`generate_figures.m`*, and *`generate_two_level_simulation_results.m`* 
+-  To generate the figures and tables exactly as they appear in the paper using the provided pre\-computed data: Run *`generate_all_results.m`*, *`generate_figures.m`*, and *`generate_two_level_simulation_results.m`*
+
+## **Estimated Runtime**
+
+-  The simulation of each dataset is expected to take upwards of 8–12 hours.
+-  Running the full pipeline consecutively may require 24 hours uninterrupted computation.
 
 **Copyright ©2026 Yanliang Chen**
 
