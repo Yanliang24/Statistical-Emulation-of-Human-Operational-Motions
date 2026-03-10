@@ -6,7 +6,7 @@ This repository contains the MATLAB implementation and data for the paper:
 Chen, Y, Srivastava, A., and Park, C., (in press) Statistical Emulations of Human Operational Motions in Industrial Environments
 
 
- **Prerequisites** 
+ *Prerequisites* 
 
 
 1.MATLAB
