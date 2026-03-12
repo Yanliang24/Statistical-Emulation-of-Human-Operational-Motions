@@ -1,15 +1,11 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % --- SOURCE & ATTRIBUTION ---
-% Original Author: Park, C.
-% Provided by: Park, C.
-% 
-% Reference:Park, C., Noh, S.D. and Srivastava, A.
-%           Data science for motion and time analysis with modern motion sensor data. 
-%           Operations Research. 
+% Original Author: Anonymous
+% Provided by: Anonymous
 %
 % --- USAGE IN THIS STUDY ---
 % This function is slightly modified for formatting and used to visulize motion sequences (Figure 5, 6, 11, and 12)
-% in the paper: "Statistical Emulations of Human Operational Motions in Industrial Environments" (2026).
+% in the paper.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 function h=DrawSkeletonSequenceAction(skeleton_bis,k,Ec,Lc,fs,varargin)
@@ -68,4 +64,5 @@ function h=DrawSkeletonSequenceAction(skeleton_bis,k,Ec,Lc,fs,varargin)
         text(mean(squeeze(skeleton_bis(1:n,1,1)))-1.6, mean(squeeze(skeleton_bis(1:n,1,2))), mean(squeeze(skeleton_bis(1:n,1,3)))+zoffset, lbl,'FontSize',fs);
     end
 end
+
 
