@@ -14,6 +14,22 @@
 
 addpath('../02_functions/')
 
+%% Figure 1
+load ..\01_data\RWP_1_Outcome_300.mat Ref_pos_data tree aligned posture_sequence
+[~, len1] = skeleton_to_posture(Ref_pos_data, tree);
+X1 = aligned{10};
+X2 = posture_sequence{10};
+
+skeleton_data_aligned = posture_to_skeleton(X1, len1, tree);   
+skeleton_data_unaligned = posture_to_skeleton(X2, len1, tree);  
+
+f = figure;
+DrawSkeletonSequenceAction(skeleton_data_aligned,30,'r','b', 16, 1, -2*1, '(1)', 0:300);
+DrawSkeletonSequenceAction(skeleton_data_unaligned,30,'r','k', 16, 1, -2*2, '(2)');
+set(gcf,'Position',[100 100 900 350])
+
+exportgraphics(f,'../06_results/figures/alignment.pdf','Resolution',300) 
+
 %% Figure 2
 load ..\01_data\RWP_1_Outcome_300.mat Ref_pos_data tree aligned
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
