@@ -46,6 +46,12 @@ The following packages and functions must be downloaded and added to the MATLAB 
 -  *`08_supplementary/`* \- Scripts for figures and tables in the Supplementary Information.
 -  *`CreateVideos.m`* \- Additional tool for creating videos from the skeleton data. 
 
+## **Data Summary**
+The provided data consists of pre-processed skeleton sequences stroed in *`.mat`* files.
+-  Worker Motion:
+				-  5 Motion class names as `*RWP_[ClassID]_Outcome_300.mat*`
+-  Exercise Motion: 
+
 ## **Setup**
 
 Clone the repository and add all subfolders to your MATLAB path: *`addpath(genpath(pwd));`*
