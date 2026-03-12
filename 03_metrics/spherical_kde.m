@@ -1,12 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % spherical_kde - The code is to estimate the kernel density of a joint
 % 
-% This script is part of the reproducibility package for the paper:
-% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
-% Operational Motions in Industrial Environments
-%
-% Copyright ©2026 Yanliang Chen
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [f_hat, kappa] = spherical_kde(X, kappa, query_points, C3)
     % X: Nx3 data points (unit vectors)

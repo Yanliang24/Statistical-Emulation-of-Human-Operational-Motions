@@ -1,12 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Flattening_Compare_Figure4_5 - The code is to generate figure 4 and
-% figure 5
 % 
-% This script is part of the reproducibility package for the paper:
-% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
-% Operational Motions in Industrial Environments
-%
-% Copyright ©2026 Yanliang Chen
+% Sequence_Visualization_Figure1_2_11_12 - The code is to generate figure 1, 
+% figure 2, figure 11, and figure 12 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

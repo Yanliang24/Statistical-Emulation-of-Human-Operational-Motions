@@ -1,11 +1,5 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % get_coordinate - The code is to compute the ralative coordination of two landmarks
-% 
-% This script is part of the reproducibility package for the paper:
-% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
-% Operational Motions in Industrial Environments
-%
-% Copyright ©2026 Yanliang Chen
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function [V, theta] = get_coordinate(X1,X2)

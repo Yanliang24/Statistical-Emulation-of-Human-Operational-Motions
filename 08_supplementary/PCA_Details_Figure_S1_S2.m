@@ -1,12 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
 % PCA_Details_Figure_S1_S2 - The code is to generate figure 1 and
 % figure 2 in Supplementary Material
-% 
-% This script is part of the reproducibility package for the paper:
-% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
-% Operational Motions in Industrial Environments
-%
-% Copyright ©2026 Yanliang Chen
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

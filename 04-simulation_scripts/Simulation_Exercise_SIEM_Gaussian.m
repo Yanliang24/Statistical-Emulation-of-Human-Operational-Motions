@@ -1,14 +1,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% 
 % Simulation_Exercise_SIEM_Gaussian - The code is to simulate sequences
 % using SIEM/SequantialPCA/MVG model descripbed in Sec. 4.3 using Exercise
 % dataset
 % 
-% This script is part of the reproducibility package for the paper:
-% Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human
-% Operational Motions in Industrial Environments
-%
-% Copyright ©2026 Yanliang Chen
-%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clear
 addpath('../02_functions/')
