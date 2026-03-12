@@ -4,11 +4,7 @@
 %     
 % tree: tree hierarchy of 21 landmarks (2 x 20): 20 pairs of parent and child node numbers  
 %
-% Reference:Park, C., Noh, S.D. and Srivastava, A.
-%           Data science for motion and time analysis with modern motion sensor data. 
-%           Operations Research. 
-%
-% Copyright ©2021 reserved to Chiwoo Park (cpark5@fsu.edu) 
+% Reference: Anonymous
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % --- USAGE IN THIS STUDY ---
