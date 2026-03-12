@@ -47,13 +47,13 @@ The following packages and functions must be downloaded and added to the MATLAB 
 -  *`CreateVideos.m`* \- Additional tool for creating videos from the skeleton data. 
 
 ## **Data Summary**
-The provided data consists of pre-processed skeleton sequences stroed in *`.mat`* files.
+The provided data consists of pre-processed skeleton sequences stroed in *`.mat`* files. All data is preprocessed, including normalization and temporal registration, as descripbed in Sec. 3.
 -  Worker Motion:
-    -    5 Motion class stored in a standalone `.mat` file with filename `*RWP_[ClassID]_Outcome_300.mat*`. For example, 'RWP_1_Outcome_300.mat` is the first motion class.
-    -    In each `.mat` file, `aligned` is the preprocessed posture data and `tree` is the hierachy tree of the landmarks
+    -    5 Motion class stored in a standalone *`.mat`* file with filename *`RWP_[ClassID]_Outcome_300.mat`*. For example, *'RWP_1_Outcome_300.mat`* is the first motion class.
+    -    In each *`.mat`* file, *`aligned`* is the preprocessed posture data and *`tree`* is the hierachy tree of the landmarks
 -  Exercise Motion:
-    -    1 Motion class stored in a `.mat` file with filename `MotionNew_Outcome_800.mat`
-    -    In each `.mat` file, `X` is the preprocessed posture data and `tree` is the hierachy tree of the landmarks
+    -    1 Motion class stored in a *`.mat`* file with filename *`MotionNew_Outcome_800.mat`*
+    -    In each *`.mat`* file, *`X`* is the preprocessed posture data and *`tree`* is the hierachy tree of the landmarks
 
 ## **Setup**
 
