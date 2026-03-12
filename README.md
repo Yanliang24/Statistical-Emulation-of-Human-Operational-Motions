@@ -73,8 +73,6 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 -  The simulation of each dataset is expected to take upwards of 8–12 hours.
 -  Running the full pipeline consecutively may require 24 hours uninterrupted computation.
 
-**Copyright ©2026 Yanliang Chen**
-
 **Academic Credit & Collaborations**
 
 -  The clustering method is based on the work by Deng et al. (2022) 
