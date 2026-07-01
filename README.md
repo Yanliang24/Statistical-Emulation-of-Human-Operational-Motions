@@ -28,23 +28,29 @@ The following packages and functions must be downloaded and added to the MATLAB 
 
 ## **Project Structure:**
 
--  *`run_all_simulations.m`* **\- Master Script 1** : Contains the full simulation pipeline. 
--  *`generate_all_results.m`* \- **Master Script 2**: Aggregates data and generates all evaluation tables. 
--  *`generate_figures.m`* \- **Master Script 3**: Aggregates data and generates figures and tables.
--  *`generate_two_level_simulation_results.m`* \- **Master Script 4**: Aggregates results for table 7 and figure 13.
--  *`01_data/`* \- Contains preprocessed raw data used as simulation input. 
--  *`02_functions/`* \- Core utility and processing functions. 
--  *`03_metrics/`* \- Evaluation metrics and pre\-computed model (e.g., clustering results and kernel density). 
--  *`04_simulation_scripts/`* \- Individual simulation execution scripts for different datasets.
--  *`05_figure_scripts/`* \- Individual execution scripts to generate figures and tables.
--  *`06_results/`* \- [Empty]Output directory for `.mat` files and generated figures.
+-  *`run_all_simulations.m`* - **Master Script 1** : Contains the full simulation pipeline and saves the raw outputs.
+    - Note: This script handles the heavy computation only; it does not generate individual tables or figures directly.  
+-  *`generate_all_results.m`* - **Master Script 2**: Aggregates data and generates all evaluation tables.
+    -  Main Manuscript: Table 2, 3, 4, 5, and 6.
+    -  Supplementary Material: Table 1 to 14.
+-  *`generate_figures.m`* - **Master Script 3**: Aggregates data and generates figures and tables.
+    -  Tables: Table 1.
+    -  Figures & Panels: 1c, 2, 5d-e, 6-11, 12b-c.
+    -  Note: Remaining panels for Figures 1, 5, and 12 are generated using external tools.
+-  *`generate_two_level_simulation_results.m`* - **Master Script 4**: Aggregates results for table 7 and figure 13.
+-  *`01_data/`* - Contains preprocessed raw data used as simulation input. 
+-  *`02_functions/`* - Core utility and processing functions. 
+-  *`03_metrics/`* - Evaluation metrics and pre-computed model (e.g., clustering results and kernel density). 
+-  *`04_simulation_scripts/`* - Individual simulation execution scripts for different datasets.
+-  *`05_figure_scripts/`* - Individual execution scripts to generate figures and tables.
+-  *`06_results/`* - [Empty]Output directory for `.mat` files and generated figures.
     - `/WorkerData/`: Subfolder for `.mat` files of the Worker dataset results.
     - `/exerciseData/`: Subfolder for `.mat` files of the Exercise dataset results.
     - `/TwoLevelSimulation/`: Subfolder for `.mat` files of the two level simulation results.
     - `/figures/`: Subfolder for exported `.pdf` visualizations.
--  *`07_baselinemethod/`* \- Implementations and wrappers for comparison methods. 
--  *`08_supplementary/`* \- Scripts for figures and tables in the Supplementary Information.
--  *`CreateVideos.m`* \- Additional tool for creating videos from the skeleton data. 
+-  *`07_baselinemethod/`* - Implementations and wrappers for comparison methods. 
+-  *`08_supplementary/`* - Scripts for figures and tables in the Supplementary Information.
+-  *`CreateVideos.m`* - Additional tool for creating videos from the skeleton data. 
 
 ## **Data Summary**
 The provided data consists of pre-processed skeleton sequences stroed in *`.mat`* files. All data is preprocessed, including normalization and temporal registration, as descripbed in Sec. 3.
