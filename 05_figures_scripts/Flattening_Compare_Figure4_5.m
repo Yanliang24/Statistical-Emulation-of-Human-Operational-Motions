@@ -12,7 +12,8 @@ load ../01_data/RWP_1_Outcome_300.mat
 
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-%% Figure 4
+%% Figure 4 ISTVF Examples
+% Compute ISTVF
 [CIS,V_ref,W_ref,mpos,Xc,Yc,Cm] = FormISTVF(aligned);
 
 figure
@@ -48,7 +49,7 @@ set(gcf,'Position',[100 100 560 250])
 ax = gca;
 exportgraphics(ax,'../06_results/figures/ITVF2.pdf','Resolution',300) 
 
-%% Figure 5
+%% Figure 5 Flattening Compare
 rng(123456)
 I = randi(60);
 X = aligned{I};
@@ -67,7 +68,7 @@ X_MTVF = MTVF_Recon(Y_MTVF,X0);
 Y_SIEM = TangentF(X,X0);
 X_SIEM = TangentF_Recon(Y_SIEM,X0);
 
-%% Plot
+%% 5d Plot Sequences
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
 skeleton_data = posture_to_skeleton(X, len1, tree);
 
@@ -92,6 +93,7 @@ set(gcf,'Position',[100 100 900 600])
 
 exportgraphics(f1,'../06_results/figures/flattening_compare_1.pdf','Resolution',300)
 
+%% 5e Plot Reconstruction Error
 for i = 1:60
     X = aligned{i};
     X0 = squeeze(X(:,1,:));

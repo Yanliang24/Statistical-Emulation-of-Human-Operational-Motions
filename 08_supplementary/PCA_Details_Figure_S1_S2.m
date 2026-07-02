@@ -12,13 +12,14 @@ load ../01_data/RWP_1_Outcome_300.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 %% Suplementray Figure 1
-%% 1a
+% Compute ISTVF
 [CIS,V_ref,W_ref,mpos,Xc,Yc,Cm] = FormISTVF(aligned);
 
-%% PCA
+% Spatial PCA
 D1 = 10;
 [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
 
+%% 1a Plot Eigenvalues
 f1 = figure;
 plot(diag(SigZ),'LineWidth',2)
 xlabel('Number of Eigenvectors')
@@ -26,7 +27,7 @@ ylabel('Eigenvalue')
 set(gca,'FontSize',18)
 exportgraphics(f1,'Eigenvalue_PCA.pdf','Resolution',300) 
 
-%% 1b
+%% 1b Plot PCA Directions
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
 for i = 1:3   
     for s = 1:5
@@ -66,7 +67,7 @@ for i = 1:3
 end
 exportgraphics(ff,'../06_results/figures/PCA_direction.pdf','Resolution',300)
 
-%% 1c
+%% 1c Plot Reconstruction
 Ty = size(CIS, 1);
 Inx = 7;
 CIre = squeeze(ZZ(:,Inx,:))*UdZ(:,1:10)' + MuZ;
@@ -88,13 +89,13 @@ DrawSkeletonSequenceAction_label(skeleton_data_PCA,30,'r','k',16, 1, -2*2, {'PCA
 set(gcf,'Position',[100 100 900 350])
 exportgraphics(f3,'../06_results/figures/PCA_reconstruction.pdf','Resolution',300) 
 
-%% Suplementray Figure 1
-%% Full FPCA
+%% Suplementray Figure 2
+%% Functional PCA
 % Set # of coefficients
 D2 = 30;
 [U,V,M,S,ef,ex,SigK] = FullfPCA(ZZ,D2);
 
-%% 2a
+%% 2a Plot Eigenvalues
 f4 = figure;
 plot(SigK(1:20,1),'LineWidth',2)
 xticks([0:5:20])
@@ -104,7 +105,7 @@ set(gca,'FontSize',18)
 ax = gca;
 exportgraphics(f4,'../06_results/figures/Eigenvalue_FPCA.pdf','Resolution',300) 
 
-%% 2b
+%% 2b Plot Mean and Basis Functions 
 f5 = figure;
 h1 = tiledlayout(2,2,"TileSpacing",'tight','Padding','compact');
 nexttile
@@ -125,7 +126,7 @@ set(gcf,'Position',[100 100 750 420])
 exportgraphics(f5,'../06_results/figures/FPCA_Direction.pdf','Resolution',300) 
 
 
-%% 2c
+%% 2c Plot Reconstructed Functions
 Inx_element = 8;
 for k = 1:10
     Znew(:,k) = U(:,:,k)*S(Inx_element,:,k)'+M(k,:)';

@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 % LevelOneSimulation_SIEM_IG - The code is to generate first level
-% simulation(as ground truth) using SIEM/IG model described in Sec. 5.4
+% simulation(as ground truth) using SIEM/IG model described in Sec. 6.4
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,26 +28,27 @@ for r = 1:num_runs
         [~,Ty,~] = size(X{1});
         
         Result.RawData(s,:) = X;
-        %% SIEM
+        %% Step One: Compute SIEM
         [Cm,V_ref,W_ref,mpos] = FormSIEM(X);
     
-        %% PCA
+        %% Step Two: Perform Spatial PCA
         D1 = 4;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
     
-        %% Full FPCA
+        %% Step Three: Perform Functional PCA
         D2 = 5;
         [Uf,Vf,Mf,Sf] = FullfPCA(ZZ,D2);
     
-        %% Generation
-
-        % Independent Gaussian Distribution
+        %% Step Four: Random Generation using Independnet Gaussian Distribution
         Snew = GaussGeneration(Sf,num_sim,1);
     
-        %% Reconstruction
+        %% Step Five: Reconstruction to the Posture Sequences
+        % Sequential PCA Reconstruction
         Cnew = PCAReconstruction(Snew,Uf,Mf,UdZ,MuZ);
+        % SIEM Reconstruction
         [Xnew,Ynew] = SIEM_to_posture(Cnew,V_ref,W_ref,mpos);
         
+        %% Save Data for Testing
         Result.SimulatedData(s,:) = Xnew;
 
         ClassName = sprintf('class_%d', s);

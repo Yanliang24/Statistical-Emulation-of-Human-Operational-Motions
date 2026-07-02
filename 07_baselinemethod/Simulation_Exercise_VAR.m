@@ -19,19 +19,20 @@ for r = 1:num_runs
     Result.SimulatedData = cell(1, num_sim); % 5 subclasses
     Result.metrics = zeros(1, 11);      % 11 metrics
 
-    %% Load data
+    % 1. Load Exercise Dataset
     filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
     load(filename, 'X','tree') 
     M = size(X,2);
     [~,Ty,~] = size(X{1});
-
+    
+    % 2. ISTVF
     [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(X);
 
-    %% Spatial PCA
+    % 3. Spatial PCA
     D1 = 10;
     [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
     
-    %% Training
+    % 4. Training
     Z1 = squeeze(ZZ(:,1,:));
     ZTrain = Z1;
     [Ty,~,~] = size(CIS);
@@ -40,13 +41,13 @@ for r = 1:num_runs
     EstMdl = estimate(Mdl,ZTrain);
     S = summarize(EstMdl);
     
-    %% Simulation    
+    % 5. Simulation    
     % Simulate spatial PCA coefficient
     for i = 1:num_sim
         Znew(:,:,i) = simulate(EstMdl,Ty);
     end
     
-    % Sequence construction
+    % 6. Sequence construction
     for i = 1:num_sim
         CInew = Znew(:,:,i)*UdZ(:,1:D1)' + MuZ;
         Cnew = [CInew(1,:); diff(CInew)];
@@ -63,7 +64,7 @@ for r = 1:num_runs
 
     Result.SimulatedData = Xnew;
     
-    %% Evaluation
+    % 7. Evaluation
     load('../03_metrics/posture_modes_12.mat','posturemode')
     load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
 

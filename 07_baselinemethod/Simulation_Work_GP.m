@@ -26,37 +26,48 @@ numSims = 100;
 trainSteps = 3000;
 
 for s = 1:5
+    % 1. Load Worker Dataset
     filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
     load(filename, 'aligned','tree')
-
+    tic;
     [~,Ty,~] = size(aligned{1});
-
+    
+    % 2. Compute SIEM
     [Cm,V_ref,W_ref,mpos] = FormSIEM(aligned);
-
+    
+    % 3. Spatial PCA
     D1 = 10;
     [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
     
+    % 4. Train SVGP
     pyData = py.numpy.array(ZZ(:).');
     pyData = pyData.reshape(int32(size(ZZ,1)), int32(size(ZZ,2)),int32(size(ZZ,3)));
     fprintf('Fitting SVGP model Dataset %d (Steps: %d)...\n', s, trainSteps);
     trainedModel = bridge.train_svgp(pyData, int32(trainSteps), "matern12");
-
+    t1 = toc;
     for r = 1:numRuns
+
+        % 5. Simulation
+        tic;
         fprintf('  Simulation Run %d (Seed: %d)...\n', r, r);   
         
         pyResults = bridge.sample_svgp(trainedModel, int32(D1), int32(Ty), ...
                                                 int32(numSims), int32(r));       
         sim_data = double(pyResults);
+
+        % 6. Reconstruction via Spatial PCA and SIEM
         for i = 1:numSims
             Ct = squeeze(sim_data(:,i,:))*UdZ(:,1:10)' + MuZ;
             Cnew(:,i,:) = Ct;
         end
         Xn = SIEM_to_posture(Cnew,V_ref,W_ref,mpos);
+        t2 = toc;
+
+        % 7. Evaluation
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
         result_runs(r,:) = evaluation(aligned, Xn, tree, KernelVMF, posturemode);
         Xnew(r,:) = Xn;
-        
         clear pyResults sim_data Xn;
     end
     

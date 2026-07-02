@@ -8,9 +8,11 @@ addpath('../02_functions/')
 
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-%% ISTVF/IG
+%% First Level: ISTVF/IG
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
 
+
+%% Setup the plot
 i=1;
 figure(100)
 hold on;
@@ -37,9 +39,11 @@ ylim(x_limits)
 title({'Level One Simulation:', '{/it IS-TVF/SequentialPCA/IG}'}, 'interpreter','latex')
 set(gca,'FontSize',16)
 
-%% SIEM/IG
+%% First Level: SIEM/IG
 clear x1 x2 x3 y1 y2 y3 xmax xmin
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
+
+%% Setup the plot
 i=1;
 figure(200)
 hold on;

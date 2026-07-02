@@ -19,7 +19,7 @@ for r = 1:num_runs
     Result.metrics = zeros(1, 11);      % 11 metrics
     Result.params = struct();
 
-    %% Load data
+    %% Load Exercise Data
     filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
     load(filename, 'X','tree')  
     M = size(X,2);
@@ -29,19 +29,18 @@ for r = 1:num_runs
     %% SIEM
     [Cm,V_ref,W_ref,mpos] = FormSIEM(X);
 
-    %% PCA
+    %% Spatial PCA
     D1 = 10;
     [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
 
-    %% Full FPCA
+    %% Functional PCA
     D2 = 30;
     [Uf,Vf,Mf,Sf] = FullfPCA(ZZ,D2);
 
-    %% Generation
-    % Multivariate Gaussian Distribution
+    %% Random Generation using Multivariate Gaussian Distribution
     Snew = GaussGeneration(Sf,num_sim,0);
 
-    %% Reconstruction
+    %% Reconstruction via Sequential PCA and SIEM
     Cnew = PCAReconstruction(Snew,Uf,Mf,UdZ,MuZ);
     [Xnew,Ynew] = SIEM_to_posture(Cnew,V_ref,W_ref,mpos);
     

@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 % LevelTwoSimulation_ISTVF_IG - The code is to generate and test the second
-% level simulation(as ground truth) described in Sec. 5.4
+% level simulation(as ground truth) described in Sec. 6.4
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -18,7 +18,7 @@ load ../06_results/TwoLevelSimulation/LevelOne/ISTVF_IG_run_1.mat
 X0 = Result.SimulatedData;
 [S,M] = size(X0);
 
-for s = 1:S
+for s = 1:S                                                                 % Loop Through 5 motion classes
     X = X0(s,:);
     ClassName = sprintf('class_%d', s);
     Uf = Result.params.(ClassName).fPCcom;
@@ -26,7 +26,7 @@ for s = 1:S
     UdZ = Result.params.(ClassName).SPCcom;
     MuZ = Result.params.(ClassName).SPCAmean;
     Vf = Result.params.(ClassName).Variance;
-    %% SIEM
+    %% Step One: Compute ISTVF
     [Cm,V_ref,W_ref,mpos] = FormISTVF(X);
     
     %% Train Test Split
@@ -39,74 +39,90 @@ for s = 1:S
     Ctrain = Cm(:,I(1:Ntrain),:);
     Ctest = Cm(:,I(Ntrain+1:M),:);
 
-    %% PCA
+    %% Step Two: Spatial PCA
     D1 = 4;
     [Z,Mu,Ud,~] = SpatialPCA(Ctrain,D1);
 
-    %% Full FPCA
+    %% Step Three: Function PCA
     % Set # of coefficients
     D2 = 4;
     [Un,Vn,Mn,S,~,~,~] = FullfPCA(Z,D2);
     
-    %% SIEM Generation
+    %% Step Four: Random Generation Using ISTVF
     %Indepedent Gaussian Distribution
     SnewIG = GaussGeneration(S,Ntest,1);
         
     %Multivariate Gaussian Distribution
     SnewMG = GaussGeneration(S,Ntest,0);
 
-    %% Reconstruction
-    % Independent Gaussian
+    %% Step Five: Reconstruction to the Posture Sequences
+    % Independent Gaussian Distribution
+    % Sequential PCA Reconstruction
     CnewIG = PCAReconstruction(SnewIG,Un,Mn,Ud,Mu);
+    % ISTVF Reconstruction
     [Xig,YnewI] = ISTVF_to_posture(CnewIG,V_ref,W_ref,mpos);
     XnewIG(s,:) = Xig;
 
-    % Multivariate Gaussian
+    % Multivariate Gaussian Distribution
+    % Sequential PCA Reconstruction
     CnewMG = PCAReconstruction(SnewMG,Un,Mn,Ud,Mu);
+    % ISTVF Reconstruction
     [Xmg,YnewM] = ISTVF_to_posture(CnewMG,V_ref,W_ref,mpos);
     XnewMG(s,:) = Xmg;
                               
-    %% Intrinsic Generation
+    %% Step Six: Random Generation using Intrinsic Representation
     [Xi] = IntrinsicGen(Xtrain,Ntest);
     XnewI(s,:) = Xi;
 
     %% Distance Matrix & 2 Sample Test
-    % Independent Gaussian Distributio    
+    % ISTVF/Independent Gaussian Distributio    
     p1(s) = twosampletest(Xtest,XnewIG(s,:),10000);
     
-    % Multi Gaussian Distribution
+    % ISTVF/Multi Gaussian Distribution
     p2(s) = twosampletest(Xtest,XnewMG(s,:),10000);
 
     % Intrinsic
     p3(s) = twosampletest(Xtest,XnewI(s,:),10000);
     
     %% Loglikelihood 
-
-    % Traning
+    % Loglikelihood For Training Set
+    % Compute the PCA Scores
     [Strain,Ztrain] = ScoreGen(Ctrain,Uf,Mf,UdZ,MuZ);
+    % Compute the Loglikelihood
     [L] = LogLikeIndepGauss(Strain,Vf);
     Ltrain(s,:) = L;
 
-    % Test
+    % Loglikelihood For Test Set
+    % Compute the PCA Scores
     [Stest,Ztest] = ScoreGen(Ctest,Uf,Mf,UdZ,MuZ);
+    % Compute the Loglikelihood
     [L] = LogLikeIndepGauss(Stest,Vf);
     Ltest(s,:) = L;
 
-    % Independent Gaussian Generated
+    % Loglikelihood For Independent Gaussian Generated Sequences
+    % Compute ISTVF
     [Cig,~,~,~] = FormISTVF(Xig);
+    % Compute the PCA Scores
     [Sig,Zig] = ScoreGen(Cig,Uf,Mf,UdZ,MuZ);
+    % Compute the Loglikelihood
     [L] = LogLikeIndepGauss(Sig,Vf);
     Lig(s,:) = L;
 
-    % Multivariate Gaussian Generated
+    % Loglikelihood For Multivariate Gaussian Generated Sequences
+    % Compute ISTVF
     [Cmg,~,~,~] = FormISTVF(Xmg);
+    % Compute the PCA Scores
     [Smg,Zmg] = ScoreGen(Cmg,Uf,Mf,UdZ,MuZ);
+    % Compute the Loglikelihood
     [L] = LogLikeIndepGauss(Smg,Vf);
     Lmg(s,:) = L;
 
-    % Intrinsic Generated
+    % Loglikelihood For Intrinsic Generated Sequences
+    % Compute ISTVF
     [Ci,~,~,~] = FormISTVF(Xi);
+    % Compute the PCA Scores
     [Si,Zi] = ScoreGen(Ci,Uf,Mf,UdZ,MuZ);
+    % Compute the Loglikelihood
     [L] = LogLikeIndepGauss(Si,Vf);
     Li(s,:) = L;
 

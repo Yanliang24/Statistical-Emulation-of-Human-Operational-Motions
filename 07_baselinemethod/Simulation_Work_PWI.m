@@ -18,14 +18,15 @@ for r = 1:num_runs
     Result.SimulatedData = cell(5, num_sim); % 5 subclasses
     Result.metrics = zeros(5, 11);      % 11 metrics
     for s = 1:5
-        %% Load data
+        % 1. Load Worker Dataset
         filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
+        tic;
         X = aligned;   
         M = size(X,2);
         [~,Ty,~] = size(X{1});
         
-        %% Compute cross-sectional mean and variance
+        % 2. Compute cross-sectional mean and variance
         for t = 1:Ty
             mpost = squeeze(X{1}(:,t,:));
             nIter = 25;
@@ -49,8 +50,9 @@ for r = 1:num_runs
             end
             Cpos{t} = Cpost;
         end
-        
-        %% Generation
+        t1 = toc;
+        tic;
+        % 3. Generation
         for k = 1:num_sim
             for t = 1:Ty
                 for i = 1:20               
@@ -69,8 +71,8 @@ for r = 1:num_runs
         end
 
         Result.SimulatedData(s,:) = Xnew;
-        
-        %% Evaluation
+        t2 = toc;
+        % 4. Evaluation
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
 

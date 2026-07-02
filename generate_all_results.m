@@ -31,6 +31,7 @@ for m = 1:numMeth
         end
         % Compute mean across the 10 runs
         finalMeans = squeeze(mean(runData, 1));
+        finalStd = squeeze(std(runData, 1));
     else 
         path = strcat('./06_results/WorkerData/Other/');
         fileName = strcat(path, meth, '_Worker_Results.mat');
@@ -39,12 +40,14 @@ for m = 1:numMeth
         for s = 1:5
             subClass = sprintf('Dataset%d', s);
             finalMeans(s, :) = data.All_Results.(subClass).mean_score;
+            finalStd(s, :) = std(data.All_Results.(subClass).raw_scores);
         end
     end
     
     %% Map means to the 11 Tables   
     for i = 1:numMetric
-        tables{i}(1:5, m) = finalMeans(:, i);
+        tables_mean{i}(1:5, m) = finalMeans(:, i);
+        tables_std{i}(1:5, m) = finalStd(:, i);
     end
 end
 
@@ -61,15 +64,31 @@ for m = 1:numMeth
         end
         % Compute mean across the 10 runs
         finalMeans = squeeze(mean(runData, 1))';
+        finalStd = squeeze(std(runData, 1))';
     else 
         path = strcat('./06_results/ExerciseData/Other/');
         fileName = strcat(path, meth, '_Exercise_Results.mat');
         data = load(fileName);     
         finalMeans = data.All_Results.mean_score;
+        finalStd = std(data.All_Results.raw_scores);
     end
     
     %% Map means to the 11 Tables   
     for i = 1:numMetric
-        tables{i}(6, m) = finalMeans(:, i);
+        tables_mean{i}(6, m) = finalMeans(:, i);
+        tables_std{i}(6, m) = finalStd(:, i);
     end
+end
+
+metricNames = {'Energy Distance', 'Cross-Sectional Variance', 'Jerk', 'Acceleration', 'Posture Validity', 'Posture Integrity', 'Quantization Variability', 'KNN Classification', 'ANND', 'ANND of Max Posture Distance', 'Roughness'};
+rowNames = {'Worker Motion 1', 'Worker Motion 2', 'Worker Motion 3', 'Worker Motion 4', 'Worker Motion 5', 'Exercise Motion'};
+columnNames = {'ISTVF/Gaussian', 'SIEM/Gaussian', 'PWI','VAR','GP','LSTM','GCN_Trans'};
+
+for i = 1:numMetric
+    t_mean = array2table(tables_mean{i},'RowNames', rowNames,'VariableNames', columnNames); 
+    t_mean.Properties.Description = sprintf('Mean Results for %s', metricNames{i});
+    T_mean{i} = t_mean;
+    t_std = array2table(tables_std{i},'RowNames', rowNames,'VariableNames', columnNames);
+    t_std.Properties.Description = sprintf('Std Dev Results for %s', metricNames{i});
+    T_std{i} = t_std;
 end

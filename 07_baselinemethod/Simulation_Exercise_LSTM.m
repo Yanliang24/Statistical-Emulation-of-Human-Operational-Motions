@@ -22,17 +22,18 @@ end
 bridge = py.importlib.import_module('LSTM_workflow');
 % py.importlib.reload(bridge);
 
+% 1. Load Exercise Dataset
 filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
 load(filename, 'X','tree')
 
-%% Train Model
+% 2. Train Model
 fprintf('Training model');
 trained_model = bridge.train_motion_model(X, num_epoch = int32(1000));
 
 % Temporary storage for the 10 runs of this specific dataset
 result_runs = zeros(num_runs, 11);
 
-%% Loop over Simulationssim_data{m} = re_normalize(sim_data{m});
+% 4. Loop over Simulations;
 for r = 1:num_runs
     fprintf('  - Run %d/10 (Seed: %d)\n', r, r);
     % Run simulation with specific seed
@@ -43,22 +44,22 @@ for r = 1:num_runs
         sim_data{m} = double(sim_data{m});
         sim_data{m} = re_normalize(sim_data{m});
     end
-
+    % 5. Evaluation
     load('../03_metrics/posture_modes_12.mat','posturemode')
     load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
     result_runs(r,:) = evaluation(X, sim_data, tree, KernelVMF, posturemode);
     Xnew(r,:) = sim_data;
 end
 
-% 5. Store Summary and Clean Up
+% Store Summary and Clean Up
 % Convert cell to matrix to calculate mean of the 10 runs
 All_Results.mean_score = mean(result_runs);
 All_Results.raw_scores = result_runs;
 All_Results.simulated = Xnew;
-% CRITICAL: Clear large variables before next dataset loop
+% Clear large variables before next dataset loop
 fprintf('Cleaning up dataset ...\n');
 clear X trained_model py_sims sim_data result_runs;
 
-% 6. Final Save
+% Final Save
 save('../06_results/ExerciseData/Other/LSTM_Exercise_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');

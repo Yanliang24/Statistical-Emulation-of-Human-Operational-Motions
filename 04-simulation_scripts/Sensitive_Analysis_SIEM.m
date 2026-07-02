@@ -14,10 +14,11 @@ X = aligned;
 Ty = size(X{1}, 2);
 RE = zeros(4,3);
 
+%% Compute SIEM of the Original Data
 [Cm,V_ref,W_ref,mpos] = FormSIEM(X);
 
 rng(123)
-%% Add Noise
+%% Add Random Noise to the Original Data
 for m = 1:M
     Xm = X{m};
     for t = 1:Ty
@@ -29,72 +30,95 @@ for m = 1:M
     Xn{m} = X_n;
 end
 
+%% Compute SIEM of the Noisy Data
 [Cn,V_refn,W_refn,mposn] = FormSIEM(Xn);
 
+%% Compute the Distance Between Original and Noisy Sequences as Reference
 for m = 1:M
     dn(m) = dist_seq_to_seq(X{m},Xn{m});
 end
-%% Sequential PCA
-% PCA
+
+%% Testing The Reconstruction using Dimension Reduction Tools for Noisy Data
+%% 1. Sequential PCA Leraned from the Original Data
+% Spatial PCA
 D1 = 5;
 [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
 
-% Full FPCA
+% Functional PCA
 D2 = 10;
 [Uf,Vf,Mf,Sf,ef,ex,SigK] = FullfPCA(ZZ,D2);
 
+% Reconstruction of the Original Data via Sequential PCA and SIEM
 CmRe = PCAReconstruction(Sf,Uf,Mf,UdZ,MuZ);
 XRe = SIEM_to_posture(CmRe,V_ref,W_ref,mpos);
 
-% Noise Data
+% Reconstruction of the Noise Data
+% Apply Spatial PCA
 Cn_flatten = reshape(Cn,[(Ty)*M,40]);
 Zn = (Cn_flatten-MuZ)*UdZ(:,1:D1);
 ZZn = reshape(Zn,[Ty,M,D1]);
 
+% Apply Funtional PCA
 for k = 1:D1
     Zk = ZZn(:,:,k);
     Sk = (Zk-Mf(k,:)')'*Uf(:,:,k);
     Sn(:,:,k) = Sk;
 end
 
+% Reconstruction via Sequential PCA and SIEM
 CnRe = PCAReconstruction(Sn,Uf,Mf,UdZ,MuZ);
 XnRe = SIEM_to_posture(CnRe,V_ref,W_ref,mpos);
 badIdx = cellfun(@(x) ~isreal(x), XnRe);
 
+% Compute the Reconstruction Error
 for m = 1:M
+    % Reconstruction Errors of the Original Data
     dpca(m) = dist_seq_to_seq(X{m},XRe{m});
+    % Reconstruction Errors of the Noisy Data
     dpca_n(m) = dist_seq_to_seq(X{m},XnRe{m});
 end
 
+%% Compute The Mean Error
 RE(1,1) = mean(dpca);
 RE(1,2) = mean(dpca_n);
 RE(1,3) = abs(RE(1,1)-RE(1,2));
 
-%% MPCA
+%% 2. MPCA Leraned from the Original Data
 addpath('../tensor_toolbox-v3.6/')
 [Zf,Mf,Uf] = SeqMPCA(Cm,75);
+% Reconstruction of the Original Data via MPCA and SIEM
 CMPCA = double(ReMPCA(Zf,Uf,Mf));
 CMPCA = permute(CMPCA,[2,3,1]);
 XRe_MPCA = SIEM_to_posture(CMPCA,V_ref,W_ref,mpos);
-% noise data
+
+% Reconstruction of the Noise Data
+% Apply MPCA 
 Cn_ctr = permute(Cn, [3,1,2]);
 Cn_ctr = Cn_ctr-repmat(Mf,[ones(1,2), 60]); %Centering
 Zn_MPCA = ttm(tensor(Cn_ctr),Uf,1:2); %NewFeature;
 Zn_MPCA = double(Zn_MPCA);
+
+% Reconstruction via MPCA and SIEM
 CnMPCA = double(ReMPCA(Zn_MPCA,Uf,Mf));
 CnMPCA = permute(CnMPCA,[2,3,1]);
 XnRe_MPCA = SIEM_to_posture(CnMPCA,V_ref,W_ref,mpos);
 
+
+% Compute the Reconstruction Error
 for m = 1:M
+    % Reconstruction Errors of the Original Data
     dmpca(m) = dist_seq_to_seq(X{m},XRe_MPCA{m});
+    % Reconstruction Errors of the Noisy Data
     dmpca_n(m) = dist_seq_to_seq(X{m},XnRe_MPCA{m});
 end
 
+%% Compute The Mean Error
 RE(2,1) = mean(dmpca);
 RE(2,2) = mean(dmpca_n);
 RE(2,3) = abs(RE(2,1)-RE(2,2));
 
-%% AE+FPCA
+%% 3. AE+FPCA Leraned from the Original Data
+%% Train AE
 hiddenSize = D1;
 Cm_flatten = reshape(Cm, (Ty)*M,[]);
 ae = trainAutoencoder(Cm_flatten', hiddenSize, ...
@@ -104,12 +128,15 @@ ae = trainAutoencoder(Cm_flatten', hiddenSize, ...
     'SparsityProportion', 0.5, ...
     'MaxEpochs', 500, ...
     'ShowProgressWindow', false);
-Z_AE_flattened = encode(ae, Cm_flatten')';
-Z_AE = reshape(Z_AE_flattened, Ty, M, []);''
 
-% D2 = 10;
+% Apply AE and FPCA for Original Data 
+Z_AE_flattened = encode(ae, Cm_flatten')';
+Z_AE = reshape(Z_AE_flattened, Ty, M, []);
+
 [Uf_AE,Vf_AE,Mf_AE,Sf_AE] = FullfPCA(Z_AE,D2);
 
+% Reconstruction of the Original Data via AE+FPCA and SIEM
+% FPCA reconstruction
 for m = 1:M
     for k = 1:D1
         RS = Sf_AE(m,:,k);
@@ -117,55 +144,68 @@ for m = 1:M
     end 
 end
 
+% AE decode
 Z_AE_re = permute(Z_AE_re, [1,3,2]);
 Z_AE_re_flattened = reshape(Z_AE_re, (Ty)*M,[]);
 
 Cm_AE_flanttend = decode(ae,Z_AE_re_flattened')';
 Cm_AE = reshape(Cm_AE_flanttend,Ty,M,[]);
+
+% SIEM reconstruction
 XRe_AE = SIEM_to_posture(Cm_AE,V_ref,W_ref,mpos);
 
-% noisy data
+% Reconstruction of the Noise Data
+% Apply AE
 Zn_AE_flattened = encode(ae, Cn_flatten')';
 Zn_AE = reshape(Zn_AE_flattened, Ty, M, []);
-
+% Apply FPCA
 for k = 1:D1
     Zk = Zn_AE(:,:,k);
     Sk = (Zk-Mf_AE(k,:)')'*Uf_AE(:,:,k);
     Sn_AE(:,:,k) = Sk;
 end
-
+% FPCA Reconstruction
 for m = 1:M
     for k = 1:D1
         RS = Sn_AE(m,:,k);
         Zn_AE_re(:,k,m) = Uf_AE(:,:,k)*RS'+Mf_AE(k,:)';    
     end 
 end
-
+% AE Rerconstruction
 Zn_AE_re = permute(Zn_AE_re, [1,3,2]);
 Zn_AE_re_flattened = reshape(Zn_AE_re, (Ty)*M,[]);
 
 Cn_AE_flanttend = decode(ae,Zn_AE_re_flattened')';
 Cn_AE = reshape(Cn_AE_flanttend,Ty,M,[]);
+% SIEM Reconstruction
 XnRe_AE = SIEM_to_posture(Cn_AE,V_ref,W_ref,mpos);
 
+% Compute the Reconstruction Error
 for m = 1:M
+    % Reconstruction Errors of the Original Data
     dae(m) = dist_seq_to_seq(X{m},XRe_AE{m});
+    % Reconstruction Errors of the Original Data
     dae_n(m) = dist_seq_to_seq(X{m},XnRe_AE{m});
 end
 
+%% Compute The Mean Error
 RE(3,1) = mean(dae);
 RE(3,2) = mean(dae_n);
 RE(3,3) = abs(RE(3,1)-RE(3,2));
 
-%% VAE+FPCA
+%% 3. VAE+FPCA Leraned from the Original Data
+% Train VAE
 opts = struct('latentDim',5);
 vae = trainVAE(Cm_flatten, opts);
+
+% Apply VAE and FPCA for Original Data 
 Z_VAE = double(vae.encode(Cm_flatten));
 Z_VAE = reshape(Z_VAE, Ty, M, []);
 
-% D2 = 20;
 [Uf_VAE,Vf_VAE,Mf_VAE,Sf_VAE] = FullfPCA(Z_VAE,D2);
 
+% Reconstruction of the Original Data via VAE+FPCA and SIEM
+% FPCA reconstruction
 for m = 1:M
     for k = 1:D1
         RS = Sf_VAE(m,:,k);
@@ -173,23 +213,29 @@ for m = 1:M
     end 
 end
 
+% VAE decode
 Z_VAE_re = permute(Z_VAE_re, [1,3,2]);
 Z_VAE_re_flattened = reshape(Z_VAE_re, (Ty)*M,[]);
 
 Cm_VAE_flanttend = vae.decode(Z_VAE_re_flattened);
 Cm_VAE = reshape(Cm_VAE_flanttend,Ty,M,[]);
+
+% SIEM Reconstruction
 XRe_VAE = SIEM_to_posture(Cm_VAE,V_ref,W_ref,mpos);
 
-% noisy data
+% Reconstruction of the Noise Data
+% Apply VAE
 Zn_VAE_flattened = vae.encode(Cn_flatten);
 Zn_VAE = reshape(Zn_VAE_flattened, Ty, M, []);
 
+% Apply FPCA
 for k = 1:D1
     Zk = Zn_VAE(:,:,k);
     Sk = (Zk-Mf_VAE(k,:)')'*Uf_VAE(:,:,k);
     Sn_VAE(:,:,k) = Sk;
 end
 
+% FPCA Reconstruction
 for m = 1:M
     for k = 1:D1
         RS = Sn_VAE(m,:,k);
@@ -197,17 +243,24 @@ for m = 1:M
     end 
 end
 
+% VAE Reconstruction
 Zn_VAE_re = permute(Zn_VAE_re, [1,3,2]);
 Zn_VAE_re_flattened = reshape(Zn_VAE_re, (Ty)*M,[]);
 
 Cn_VAE_flanttend = vae.decode(Zn_VAE_re_flattened);
 Cn_VAE = reshape(Cn_VAE_flanttend,Ty,M,[]);
+% SIEM Reconstruction
 XnRe_VAE = SIEM_to_posture(Cn_VAE,V_ref,W_ref,mpos);
 
+% Compute the Reconstruction Error
 for m = 1:M
+    % Reconstruction Errors of the Original Data
     dvae(m) = dist_seq_to_seq(X{m},XRe_VAE{m});
+    % Reconstruction Errors of the Noisy Data
     dvae_n(m) = dist_seq_to_seq(X{m},XnRe_VAE{m});
 end
+
+%% Compute The Mean Error
 
 RE(4,1) = mean(dvae);
 RE(4,2) = mean(dvae_n);

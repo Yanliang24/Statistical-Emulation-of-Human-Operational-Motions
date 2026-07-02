@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 % LevelOneSimulation_ISTVF_IG - The code is to generate first level
-% simulation(as ground truth) using ISTVF/IG model described in Sec. 5.4
+% simulation(as ground truth) using ISTVF/IG model described in Sec. 6.4
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,27 +28,28 @@ for r = 1:num_runs
         [~,Ty,~] = size(X{1});
 
         Result.RawData(s,:) = X;
-        %% ITVF
+        %% Step One: Compute ITVF
         [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(X);
         Result.CenteredData(s,:) = Xc;
-        %% PCA
+        %% Step Two: Perform Spatial PCA
         D1 = 4;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
     
-        %% Full FPCA
+        %% Step Three: Perform Funtional PCA
         % Set # of coefficients
         D2 = 5;
         [Uf,Vf,Mf,Sf] = FullfPCA(ZZ,D2);
     
-        %% Generation  
-        % Independent Gaussian Distribution
+        %% Step Four: Random Generation using Independent Gaussian Distribution
         SnewG = GaussGeneration(Sf,num_sim,1);
 
-        %% Reconstruction
-        % Multivariate Gaussian
+        %% Step Five: Reconstruction to the Posture Sequences
+        % Sequential PCA Reconstruction
         Cnew = PCAReconstruction(SnewG,Uf,Mf,UdZ,MuZ);
+        % ISTVF Reconstruction
         [Xnew,Ynew,Cnew] = ISTVF_to_posture(Cnew,V_ref,W_ref,mpos);
-
+        
+        %% Save Data for Testing
         Result.SimulatedData(s,:) = Xnew;
 
         ClassName = sprintf('class_%d', s);

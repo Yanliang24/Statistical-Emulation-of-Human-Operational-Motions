@@ -19,13 +19,13 @@ for r = 1:num_runs
     Result.SimulatedData = cell(1, num_sim); % 5 subclasses
     Result.metrics = zeros(1, 11);      % 11 metrics
     
-    %% Load data
+    % 1. Load Exercise Dataset
     filename = sprintf('../01_data/MotionNew_Outcome_800.mat');   
     load(filename, 'X','tree') 
     M = size(X,2);
     [~,Ty,~] = size(X{1});
     
-    %% Compute cross-sectional mean and variance
+    % 2. Compute cross-sectional mean and variance
     for t = 1:Ty
         mpost = squeeze(X{1}(:,t,:));
         nIter = 25;
@@ -50,7 +50,7 @@ for r = 1:num_runs
         Cpos{t} = Cpost;
     end
     
-    %% Generation
+    % 3. Generation
     for k = 1:num_sim
         for t = 1:Ty
             for i = 1:20               
@@ -70,7 +70,7 @@ for r = 1:num_runs
 
     Result.SimulatedData = Xnew;
     
-    %% Evaluation
+    % 4. Evaluation
     load('../03_metrics/posture_modes_12.mat','posturemode')
     load('../03_metrics/Estimated_ROW_New.mat', 'KernelVMF')
 

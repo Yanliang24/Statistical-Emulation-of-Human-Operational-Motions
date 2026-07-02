@@ -18,8 +18,8 @@ for r = 1:num_runs
     Result.SimulatedData = cell(5, num_sim); % 5 subclasses
     Result.metrics = zeros(5, 11);      % 11 metrics
     Result.params = struct();
-    for s = 1:5
-        %% Load data
+    for s = 1:5                         % Loop through 5 motion classes
+        %% Load Worker Data
         filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
         X = aligned;   
@@ -30,20 +30,18 @@ for r = 1:num_runs
         %% SIEM
         [Cm,V_ref,W_ref,mpos] = FormSIEM(X);
     
-        %% PCA
+        %% Spatial PCA
         D1 = 10;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(Cm,D1);
     
-        %% Full FPCA
+        %% Functional PCA
         D2 = 30;
         [Uf,Vf,Mf,Sf] = FullfPCA(ZZ,D2);
     
-        %% Generation
-
-        % Multivariate Gaussian Distribution
+        %% Random Generation using Multivariate Gaussian Distribution
         Snew = GaussGeneration(Sf,num_sim,0);
     
-        %% Reconstruction
+        %% Reconstruction via Sequential PCA and SIEM
         Cnew = PCAReconstruction(Snew,Uf,Mf,UdZ,MuZ);
         [Xnew,Ynew] = SIEM_to_posture(Cnew,V_ref,W_ref,mpos);
         

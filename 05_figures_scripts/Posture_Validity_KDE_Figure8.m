@@ -7,7 +7,7 @@
 % clear 
 addpath('../03_metrics/')
 
-%% Worker Data
+%% Load Worker Data as Example
 X = [];
 for s = 1:5
     filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
@@ -43,6 +43,7 @@ elseif tree(1,1) == 21                  % Worker Motion
     Test_Id(9,:) =  [8  9];             % Left Knee 
 end
 
+% Collect individual postures
 M = size(X,2);
 T = size(X{1},2);
 Y = [];
@@ -50,27 +51,32 @@ for i = 1:M
     Y = [Y X{i}];
 end
 
+% Sample N postures for training
 % N = M*T;
 N = 10000;
 idx = randperm(M*T);
 Ys = Y(:,idx(1:N),:);
 f = figure(100);
 tiledlayout(1,4,"TileSpacing","tight","Padding","tight")
-for i = 1:I
+for i = 1:I     % Loop over i-th key joint
     for j = 1:N
+        % Compute the Relative Coordinates
         Z(j,:) = get_coordinate(squeeze(Ys(Test_Id(i,1),j,:))',squeeze(Ys(Test_Id(i,2),j,:))');
     end
-
+    % Mesh Grid for Empirical Estimation
     [theta, phi] = meshgrid(linspace(0, pi, 150), linspace(0, 2*pi, 300));
     xq = sin(theta) .* cos(phi);
     yq = sin(theta) .* sin(phi);
     zq = cos(theta);
     query_points = [xq(:), yq(:), zq(:)];
-    [f_hat, kappa] = spherical_kde(Z, [], query_points);
-    
+
+    % KDE Estimation 
+    [f_hat, kappa] = spherical_kde(Z, [], query_points);    
     f_hat_grid = reshape(f_hat, size(xq));
+    % Confidence Region
     t_alpha = spherical_kde_confidence_region(Z, kappa, 0.05);
     
+    %% Figure 8 Visualization for Some Key Joints 
     if ismember(i, [2, 4, 6, 8])
         nexttile
         % figure
