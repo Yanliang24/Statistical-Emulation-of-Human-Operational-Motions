@@ -32,7 +32,7 @@ The following packages and functions must be downloaded and added to the MATLAB 
     - Note: This script handles the heavy computation only; it does not generate individual tables or figures directly.  
 -  *`generate_all_results.m`* - **Master Script 2**: Aggregates data and generates all evaluation tables.
     -  Main Manuscript: Table 2, 3, 4, 5, and 6.
-    -  Supplementary Material: Table 1 to 14.
+    -  Supplementary Material: Table S1 to S14.
 -  *`generate_figures.m`* - **Master Script 3**: Aggregates data and generates figures and tables.
     -  Tables: Table 1.
     -  Figures & Panels: 1c, 2, 5d-e, 6-11, 12b-c.
