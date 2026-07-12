@@ -72,8 +72,14 @@ The intermediate results and processed output variables are **not included** due
 To reproduce the results presented in the paper, the full simulation pipeline must be executed locally using the follwoing steps.
 
 ### Step 1: Execute the Core Simulation Pipeline
--  To re\-run the simulations from scratch: Run *`run_all_simulations.m.`* 
--  To generate the figures and tables exactly as they appear in the paper using the provided pre\-computed data: Run *`generate_all_results.m`*, *`generate_figures.m`*, and *`generate_two_level_simulation_results.m`*
+-  Run *`run_all_simulations.m.`*
+-  Gnerating the raw simulation outputs, including baseline methods, and svaing them as `.mat` file into the subfolder `06_results/`.
+### Step 2: Generate the Figures and Tables in the Paper
+-  Run *`generate_all_results.m`* to generate Table 2-6 in the main manuscript and Table S1 to S13 in Supplementary Material.
+-  Run *`generate_figures.m`* to generate Table 1, Figure 1c, 2, 5d-e, 6-11, 12b-c in the main manuscript
+-  Run *`generate_two_level_simulation_results.m`* to generate Table 7 and Figure 13 in the main manuscript
+### Step 3: Generate the Result in the Supplementary Material
+- Run *
 
 ## **Estimated Runtime**
 
