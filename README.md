@@ -85,7 +85,7 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 ### Step 3: Generate the Result in the Supplementary Material
 - Run *`PCA_Details_Figure_S1_S2.m`* to generate Figure S1 to S3 in the Supplementary Material
 - Run *`Intermediate_Steps_Figure_S4_S5.m`* to generate Figure S4 and S5 in the Supplementary Material
-- Run *`Sensitivity_Analysis_Result_Table_S13.m`* to generate Table S12 in the Supplementary Material
+- Run *`Sensitivity_Analysis_Result_Table_S13.m`* to generate Table S13 in the Supplementary Material
 
 ## **Estimated Runtime**
 
