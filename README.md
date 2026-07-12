@@ -15,7 +15,7 @@ Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human Operation
 2.This project uses the MATLAB\-to\-Python interface for the baseline method implemtation.. 
 
 -  Python Version: 3.9  
--  Required Packages: 'numpy==1.24.3' , 'torch: 2.7.0', 'gpflow: 2.9.0', 'tensorflow: 2.13.0' 
+-  Required Packages: 'numpy: 1.24.3' , 'torch: 2.7.0', 'gpflow: 2.9.0', 'tensorflow: 2.13.0' 
 
 External Dependencies:
 
