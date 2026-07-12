@@ -12,7 +12,7 @@ Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human Operation
 -  Tested on version R2024a 
 -  Required Toolboxes: Deep Learning, Statistics and Machine Learning, Econometrics, Communication              
 
-2.This project uses the MATLAB\-to\-Python interface for the baseline method implemtation.. 
+2.This project uses the MATLAB\-to\-Python interface for the baseline method implementation.
 
 -  Python Version: 3.9  
 -  Required Packages: 'numpy: 1.24.3' , 'torch: 2.7.0', 'gpflow: 2.9.0', 'tensorflow: 2.13.0' 
