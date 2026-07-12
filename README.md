@@ -68,9 +68,10 @@ Clone the repository and add all subfolders to your MATLAB path: *`addpath(genpa
 ## **Reproducing Results**
 
 To maintain a lightweight repository, this package contains the **Raw Data** and **Initialization Seeds** only. 
-The processed data are **not included** due to their significant file size (>2GB). 
-To reproduce the results presented in the paper, the full simulation pipeline must be executed locally.
+The intermediate results and processed output variables are **not included** due to their significant file size (>2GB). 
+To reproduce the results presented in the paper, the full simulation pipeline must be executed locally using the follwoing steps.
 
+### Step 1: Execute the Core Simulation Pipeline
 -  To re\-run the simulations from scratch: Run *`run_all_simulations.m.`* 
 -  To generate the figures and tables exactly as they appear in the paper using the provided pre\-computed data: Run *`generate_all_results.m`*, *`generate_figures.m`*, and *`generate_two_level_simulation_results.m`*
 
