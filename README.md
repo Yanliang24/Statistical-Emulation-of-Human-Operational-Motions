@@ -28,7 +28,7 @@ The following packages and functions must be downloaded and added to the MATLAB 
 
 ## **Project Structure:**
 
--  *`run_all_simulations.m`* - **Master Script 1** : Contains the full simulation pipeline and saves the raw outputs.
+-  *`run_all_simulations.m`* - **Master Script 1** : Contains the full simulation pipeline that processes the inputs from `01_data/` and exports the raw outputs into `06_results/`.
     - Note: This script handles the heavy computation only; it does not generate individual tables or figures directly.  
 -  *`generate_all_results.m`* - **Master Script 2**: Aggregates data and generates all evaluation tables.
     -  Main Manuscript: Table 2, 3, 4, 5, and 6.
@@ -36,7 +36,7 @@ The following packages and functions must be downloaded and added to the MATLAB 
 -  *`generate_figures.m`* - **Master Script 3**: Aggregates data and generates figures and tables.
     -  Tables: Table 1.
     -  Figures & Panels: 1c, 2, 5d-e, 6-11, 12b-c.
-    -  Note: Remaining panels for Figures 1, 5, and 12 are generated using external tools.
+    -  Note: Remaining panels for Figures 1, 5, and 12 are conceptual diagrams and generated using external tools (e.g., Microsoft PowerPoint).
 -  *`generate_two_level_simulation_results.m`* - **Master Script 4**: Aggregates results for table 7 and figure 13.
 -  *`01_data/`* - Contains preprocessed raw data used as simulation input. 
 -  *`02_functions/`* - Core utility and processing functions. 
