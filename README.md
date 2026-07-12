@@ -77,7 +77,7 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 
 ### Step 1: Execute the Core Simulation Pipeline
 -  Run *`run_all_simulations.m.`*
--  Gnerating the raw simulation outputs, including baseline methods, and svaing them as `.mat` file into the subfolder `06_results/`.
+-  Generating the raw simulation outputs, including baseline methods, and saving them as `.mat` file into the subfolder `06_results/`.
 ### Step 2: Generate the Figures and Tables in the Paper
 -  Run *`generate_all_results.m`* to generate Table 2-6 in the main manuscript and Table S1 to S12 in Supplementary Material.
 -  Run *`generate_figures.m`* to generate Table 1, Figure 1c, 2, 5d-e, 6-11, 12b-c in the main manuscript
