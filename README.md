@@ -82,6 +82,7 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 ### Step 2: Generate the Figures and Tables in the Main Manuscript
 -  Run *`generate_all_results.m`* to generate Table 2-6 in the main manuscript and Table S1 to S12 in Supplementary Material.
 -  Run *`generate_figures.m`* to generate Table 1, Figure 1c, 2, 5d-e, 6 (panels a/c are identical to Supplementary Material Figure S3a/b), 7-11, 12b-c, 13 in the main manuscript
+    -  Note: The figures are saved in subfolder `06_results/figures/`.
 -  Run *`generate_two_level_simulation_results.m`* to generate Table 7 in the main manuscript
 ### Step 3: Generate the Result in the Supplementary Material
 - Run *`PCA_Details_Figure_S1_S2.m`* to generate Figure S1 to S3 in the Supplementary Material
