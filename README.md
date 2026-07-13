@@ -96,4 +96,4 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 
 -  The clustering method is based on the work by Deng et al. (2022) 
 -  The geometry operations were re\-implemented by the author for this pipeline, the original logic remains the intellectual property of the original authors.
--  The visulization functions were modified by the author for this piple line, the original logic remains the intellectual property of the original authors.
+-  The visualization functions were modified by the author for this pipeline, the original logic remains the intellectual property of the original authors.
