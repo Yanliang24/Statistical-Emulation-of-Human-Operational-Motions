@@ -50,7 +50,7 @@ The following packages and functions must be downloaded and added to the MATLAB 
     - `/figures/`: Subfolder for exported `.pdf` visualizations.
 -  *`07_baselinemethod/`* - Implementations and wrappers for comparison methods. 
 -  *`08_supplementary/`* - Scripts for figures and tables in the Supplementary Information.
-    -  *`PCA_Details_Figure_S1_S2_S3.m`* to generate Figure S1 to S3 in the Supplementary Material
+    -  *`PCA_Details_Figure_S1_S2.m`* to generate Figure S1 to S2 in the Supplementary Material
     -  *`Intermediate_Steps_Figure_S4_S5.m`* to generate Figure S4 and S5 in the Supplementary Material
     -  *`Sensitivity_Analysis_Result_Table_S13.m`* to generate Table S13 in the Supplementary Material
 
