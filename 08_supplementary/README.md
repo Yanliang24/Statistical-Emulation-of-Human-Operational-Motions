@@ -13,7 +13,7 @@ The following table provides a direct link between the items in the manuscript a
 | **Figure S3** | `../05_figure_scripts/PCA_Result_Figure6_7_10.m` <br> (Called via **Master Script 3**: `../generate_figures.m`)| same as Figure 6a/c in the main manuscript |
 | **Figure S4 and S5** | `Intermediate_Steps_Figure_S4_S5.m` |
 | **Table S1 - S12** | `../generate_all_results.m` | |
-| **Table S13** | `Sensitive_Analysis_Result_Table_S13.m` | |
+| **Table S13** | `Sensitivity_Analysis_Result_Table_S13.m` | |
 
 ## Reproducing Result
 These scripts require the same environment as the main simulation.
