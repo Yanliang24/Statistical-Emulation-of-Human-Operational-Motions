@@ -20,7 +20,7 @@ Chen, Y, Srivastava, A., and Park, C., Statistical Emulations of Human Operation
 External Dependencies:
 
 
-The following packages and functions must be downloaded and added to the MATLAB path before running the script *`PCA_Result_Figure6_7_10.m`*
+The following packages and functions must be downloaded and added to the MATLAB path. They are required by the internal script *`PCA_Result_Figure6_7_10.m`* called during the execution of the **Master Script 3**, *`generate_figures.m`*
 
 1.  tensor\_toolbox\-v3.6: [Tensor Toolbox Version 3.6 (R2023b) 28\-Sep\-2023 · tensors / tensor\_toolbox · GitLab](https://gitlab.com/tensors/tensor_toolbox/-/releases/v3.6)
 2. MPCA function: [Multilinear Principal Component Analysis (MPCA) \- File Exchange \- MATLAB Central](https://www.mathworks.com/matlabcentral/fileexchange/26168-multilinear-principal-component-analysis-mpca)
