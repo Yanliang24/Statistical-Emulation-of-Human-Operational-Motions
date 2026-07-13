@@ -35,9 +35,9 @@ The following packages and functions must be downloaded and added to the MATLAB 
     -  Supplementary Material: Table S1 to S12.
 -  *`generate_figures.m`* - **Master Script 3**: Aggregates data and generates figures and tables.
     -  Tables: Table 1.
-    -  Figures & Panels: 1c, 2, 5d-e, 6-11, 12b-c.
+    -  Figures & Panels: 1c, 2, 5d-e, 6-11, 12b-c, 13.
     -  Note: Remaining panels for Figures 1, 5, and 12 are conceptual diagrams and generated using external tools (e.g., Microsoft PowerPoint).
--  *`generate_two_level_simulation_results.m`* - **Master Script 4**: Aggregates results for table 7 and figure 13.
+-  *`generate_two_level_simulation_results.m`* - **Master Script 4**: Aggregates results for table 7.
 -  *`01_data/`* - Contains preprocessed raw data used as simulation input. 
 -  *`02_functions/`* - Core utility and processing functions. 
 -  *`03_metrics/`* - Evaluation metrics and pre-computed model (e.g., clustering results and kernel density). 
