@@ -58,7 +58,7 @@ The following packages and functions must be downloaded and added to the MATLAB 
 -  *`CreateVideos.m`* - Additional tool for creating videos from the skeleton data. 
 
 ## **Data Summary**
-The provided data consists of pre-processed skeleton sequences stored in *`.mat`* files. All data is preprocessed, including normalization and temporal registration, as descripbed in Sec. 3.
+The provided data consists of pre-processed skeleton sequences stored in *`.mat`* files. All data is preprocessed, including normalization and temporal registration, as described in Sec. 3.
 -  Worker Motion:
     -    5 Motion class stored in a standalone *`.mat`* file with filename *`RWP_[ClassID]_Outcome_300.mat`*. For example, *'RWP_1_Outcome_300.mat`* is the first motion class.
     -    In each *`.mat`* file, *`aligned`* is the preprocessed posture data and *`tree`* is the hierarchy tree of the landmarks
@@ -92,10 +92,10 @@ To reproduce the results presented in the paper, the full simulation pipeline mu
 ## **Estimated Runtime**
 
 -  The simulation of each dataset is expected to take upwards of 8–12 hours.
--  Running the full pipeline consecutively may require 24 hours uninterrupted computation.
+-  Running the full pipeline consecutively may require 24 hours of uninterrupted computation.
 
 **Academic Credit & Collaborations**
 
 -  The clustering method is based on the work by Deng et al. (2022) 
--  The geometry operations were re\-implemented by the author for this pipeline, the original logic remains the intellectual property of the original authors.
--  The visualization functions were modified by the author for this pipeline, the original logic remains the intellectual property of the original authors.
+-  The geometry operations were re\-implemented by the author for this pipeline; the original logic remains the intellectual property of the original authors.
+-  The visualization functions were modified by the author for this pipeline; the original logic remains the intellectual property of the original authors.
