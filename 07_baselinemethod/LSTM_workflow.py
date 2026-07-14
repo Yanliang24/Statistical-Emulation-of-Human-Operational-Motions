@@ -10,7 +10,7 @@ import numpy as np
 import torch.nn.functional as F
 
 class MotionLSTM(nn.Module):
-    def __init__(self, input_size=60, hidden_size=128, num_layers=2):
+    def __init__(self, input_size=60, hidden_size=64, num_layers=1):
         super(MotionLSTM, self).__init__()
         self.lstm = nn.LSTM(input_size, hidden_size, num_layers, batch_first=True)
         self.fc = nn.Linear(hidden_size, input_size)
@@ -36,7 +36,10 @@ def _prepare_sequences(motion_cells):
         
     return motion_sequences
 
-def train_motion_model(data_from_matlab, hidden_size=128, num_layers=2, num_epoch = 500):
+def train_motion_model(data_from_matlab, seed_val, hidden_size=64, num_layers=1, num_epoch = 500):
+    torch.manual_seed(int(seed_val))
+    np.random.seed(int(seed_val))
+
     flattened = _prepare_sequences(data_from_matlab)
     
     # Batch tensors: [Batch, Time, 60]
@@ -44,7 +47,7 @@ def train_motion_model(data_from_matlab, hidden_size=128, num_layers=2, num_epoc
     Y_tensor = torch.stack([torch.tensor(s[1:], dtype=torch.float32) for s in flattened])
 
     model = MotionLSTM(input_size=60, hidden_size=int(hidden_size), num_layers=int(num_layers))
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.001, weight_decay=1e-4)
 
     model.train()
     for epoch in range(num_epoch):
@@ -55,7 +58,7 @@ def train_motion_model(data_from_matlab, hidden_size=128, num_layers=2, num_epoc
         loss.backward()
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
         optimizer.step()
-        if (epoch + 1) % 100 == 0:
+        if epoch == 0 or (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
     
     return model

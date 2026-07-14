@@ -9,7 +9,7 @@
 
 addpath('../02_functions/')
 
-%% Figure 1c An Example of Worker Motion
+%% === Figure 1c An Example of Worker Motion ===
 % Load Worker Motion 1
 load ..\01_data\RWP_1_Outcome_300.mat Ref_pos_data tree aligned posture_sequence
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
@@ -29,7 +29,7 @@ set(gcf,'Position',[100 100 900 350])
 
 exportgraphics(f,'../06_results/figures/alignment.pdf','Resolution',300) 
 
-%% Figure 2 Examples of Worker Motion and Exercise Motion
+%% === Figure 2 Examples of Worker Motion and Exercise Motion ===
 % Worker Motion
 load ..\01_data\RWP_1_Outcome_300.mat Ref_pos_data tree aligned
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
@@ -48,15 +48,17 @@ DrawSkeletonSequenceAction_label_new(skeleton_data3,80,'r','k',16, 1, -5, {'Exer
 set(gcf,'Position',[50 50 900 310])
 exportgraphics(f1,'../06_results/figures/Motion_Data_Example.pdf','Resolution',300) 
 
-%% Figure 11 Simulation Visualization
-%% Load Worker Motion 1
+%% === Figure 11 Simulation Visualization ===
+%%%% --- Load Worker Motion 1 ---
 load ..\01_data\RWP_1_Outcome_300.mat Ref_pos_data tree aligned
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
-%% Original Sequence
+
+%%%% --- Original Sequence---
 I = randi(60,1,8);
 X(1) = aligned(1,I(1));
 
-%% Load Simulated Data
+%%%% --- Load Simulated Data ---
+
 % ISTVF
 load ../06_results/WorkerData/ISTVF/run_1.mat Result
 X{2} = Result.SimulatedData{1,1};
@@ -85,11 +87,14 @@ X{7} = All_Results.Dataset1.simulated{1,1};
 load ../06_results/WorkerData/Other/GCN_Trans_Worker_Results.mat All_Results
 X{8} = All_Results.Dataset1.simulated{1,1};
 
+%%%% --- Get Skeleton Representation ---
 for i = 1:8
     skeleton_data{i} = posture_to_skeleton(X{i}, len1, tree);
 end
 
-%% Posture Sequence Plot
+%%%% --- Posture Sequence Plot ---
+
+% Left Panel
 f2 = figure;
 DrawSkeletonSequenceAction_label(skeleton_data{1},30,'r','b',16, 1, -2, {'Original'}, 0:300);
 DrawSkeletonSequenceAction_label(skeleton_data{2},30,'r','k',16, 1, -4, {'IS-TVF', '/Sequential-','PCA/MVG'});
@@ -99,6 +104,7 @@ set(gca, 'InnerPosition',[0.10 0.05 0.9 0.88])
 set(gcf,'Position',[50 50 800 540])
 exportgraphics(f2,'../06_results/figures/Simulation_compare_3_1.pdf','Resolution',300) 
 
+% Right Panel
 f3 = figure;
 DrawSkeletonSequenceAction_label(skeleton_data{5},30,'r','k',16, 1, -2, {'IS-TVF', '/Spatial-','PCA/VAR'}, 0:300);
 DrawSkeletonSequenceAction_label(skeleton_data{8},30,'r','k',16, 1, -4, {'SIEM', '/Spatial-','PCA/GP'});
@@ -108,8 +114,8 @@ set(gca, 'InnerPosition',[0.10 0.05 0.9 0.88])
 set(gcf,'Position',[50 50 800 540])
 exportgraphics(f3,'../06_results/figures/Simulation_compare_3_2.pdf','Resolution',300) 
 
-%% Figure 12 Visualization of Two-Level Simulation
-%% 12b: First Level using ISTVF/IG
+%% === Figure 12 Visualization of Two-Level Simulation ===
+%%%% --- 12b: First Level using ISTVF/IG ---
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat Xtrain XnewIG XnewMG XnewI
 % Training Data (First Level)
 XX1{1} = Xtrain{1};
@@ -132,7 +138,7 @@ set(gca, 'InnerPosition',[0.13 0.05 0.85 0.9])
 set(gcf,'Position',[50 50 900 650])
 exportgraphics(f4,'../06_results/figures/ISTVF_Simulation.pdf','Resolution',300) 
 
-%% 12c: First Level using SIEM/IG
+%%%% --- 12c: First Level using SIEM/IG ---
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat Xtrain XnewIG XnewMG XnewI
 % Training Data (First Level)
 XX2{1} = Xtrain{1};

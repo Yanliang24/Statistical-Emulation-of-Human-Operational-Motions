@@ -12,10 +12,12 @@ load ../01_data/RWP_1_Outcome_300.mat
 
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-%% Figure 4 ISTVF Examples
-% Compute ISTVF
+%% === Figure 4 ISTVF Examples ===
+%%%% --- Step 1. Compute ISTVF ---
 [CIS,V_ref,W_ref,mpos,Xc,Yc,Cm] = FormISTVF(aligned);
 
+%%%% --- Step 2. Plot the Result ---
+% Example 1 (Figure 4a)
 figure
 yyaxis left
 plot(Cm(:,8,2),'linewidth',2)
@@ -32,6 +34,7 @@ set(gcf,'Position',[100 100 560 250])
 ax = gca;
 exportgraphics(ax,'../06_results/figures/ITVF1.pdf','Resolution',300) 
 
+% Example 2 (Figure 4b)
 figure
 yyaxis left
 plot(Cm(:,7,2),'linewidth',2)
@@ -49,26 +52,52 @@ set(gcf,'Position',[100 100 560 250])
 ax = gca;
 exportgraphics(ax,'../06_results/figures/ITVF2.pdf','Resolution',300) 
 
-%% Figure 5 Flattening Compare
+%% === Figure 5 Flattening Compare ===
+%%%% --- Randomyl Select a Sequence as an Example ---
 rng(123456)
 I = randi(60);
 X = aligned{I};
 Ty = size(X,2);
 X0 = squeeze(X(:,1,:));
 
-%% STVF
+%%%% --- Compute the Flattened Sequences
+% Method 1. STVF
 Y_STVF = STVF(X);
 X_STVF = STVF_Recon(Y_STVF,X0);
 
-%% MTVF
+% Method 2. MTVF
 Y_MTVF = MTVF(X);
 X_MTVF = MTVF_Recon(Y_MTVF,X0);
 
-%% SIEM
+% Method 3. SIEM
 Y_SIEM = TangentF(X,X0);
 X_SIEM = TangentF_Recon(Y_SIEM,X0);
 
-%% 5d Plot Sequences
+%%%% --- Compute the Reconstruction ---
+for i = 1:60
+    X = aligned{i};
+    X0 = squeeze(X(:,1,:));
+    % Method 1. STVF
+    Y_STVF = STVF(X);
+    X_STVF = STVF_Recon(Y_STVF,X0);
+    
+    % Method 2. TVF    
+    Y_MTVF = MTVF(X);
+    X_MTVF = MTVF_Recon(Y_MTVF,X0);
+    
+    % Method 3. SIEM    
+    Y_SIEM = TangentF(X,X0);
+    X_SIEM = TangentF_Recon(Y_SIEM,X0);
+    
+    % Compute reconstruction error
+    for t = 1:Ty
+        d1(i,t) = dist_seq_to_seq(X(:,t,:),X_STVF(:,t,:));
+        d2(i,t) = dist_seq_to_seq(X(:,t,:),X_MTVF(:,t,:));
+        d3(i,t) = dist_seq_to_seq(X(:,t,:),X_SIEM(:,t,:));
+    end
+end
+
+%%%% --- Plot Sequences (Figure 5d)---
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
 skeleton_data = posture_to_skeleton(X, len1, tree);
 
@@ -93,30 +122,7 @@ set(gcf,'Position',[100 100 900 600])
 
 exportgraphics(f1,'../06_results/figures/flattening_compare_1.pdf','Resolution',300)
 
-%% 5e Plot Reconstruction Error
-for i = 1:60
-    X = aligned{i};
-    X0 = squeeze(X(:,1,:));
-    %% STVF
-    Y_STVF = STVF(X);
-    X_STVF = STVF_Recon(Y_STVF,X0);
-    
-    %% TVF    
-    Y_MTVF = MTVF(X);
-    X_MTVF = MTVF_Recon(Y_MTVF,X0);
-    
-    %% SIEM    
-    Y_SIEM = TangentF(X,X0);
-    X_SIEM = TangentF_Recon(Y_SIEM,X0);
-    
-    %% Compute reconstruction error
-    for t = 1:Ty
-        d1(i,t) = dist_seq_to_seq(X(:,t,:),X_STVF(:,t,:));
-        d2(i,t) = dist_seq_to_seq(X(:,t,:),X_MTVF(:,t,:));
-        d3(i,t) = dist_seq_to_seq(X(:,t,:),X_SIEM(:,t,:));
-    end
-end
-
+%%%% --- Plot Reconstruction Error (Figure 5e) ---
 f2 = figure;
 t = tiledlayout(2,1,"TileSpacing","tight","Padding","tight");
 nexttile(1);

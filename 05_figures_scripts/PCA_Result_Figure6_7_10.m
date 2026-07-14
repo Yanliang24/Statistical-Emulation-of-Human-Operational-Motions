@@ -11,12 +11,14 @@ addpath('../02_functions/')
 addpath('../03_metrics/')
 load ../01_data/RWP_1_Outcome_300.mat
 
-%% Comput ISTVF
+%% === Compute ISTVF ===
 [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(aligned);
 [Ty,M,~] = size(CIS);
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-%% Sequential PCA
+%% === Reconstruction Compare (Figure 6a/6c and Figure S3)  ===
+%%%% Note: Figure 6a/6c are identical to Figure S3a/S3b in the Supplementary Material
+% a). Sequential PCA
 % Spatial PCA
 D1 = 10;
 [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
@@ -26,7 +28,7 @@ D2 = 30;
 % Reconstruction
 CIre = PCAReconstruction(S,Us,Ms,UdZ,MuZ);
 
-%% MPCA
+% b). MPCA
 addpath('../tensor_toolbox-v3.6/')
 [Zf,Mf,Uf] = SeqMPCA(CIS,85);
 
@@ -34,12 +36,42 @@ addpath('../tensor_toolbox-v3.6/')
 CMPCA = double(ReMPCA(Zf,Uf,Mf));
 CMPCA = permute(CMPCA,[2,3,1]);
 
+%%%% --- Figure 6a (S3a) Reconstruction of ISTVF Functions ---
+% use the 13th element of the ISTVF for the 8th sequence observation as an example 
+f2 = figure;
+plot(CIS(:,8,13),'linewidth',2)                                             % Original 
+hold on
+plot(CIre(:,8,13),'linewidth',2)                                            % Sequential Reconstruction
+hold on
+plot(CMPCA(:,8,13),'linewidth',2)                                           % MPCA Reconstruction
+legend('Original','Sequential PCA','MPCA')      
+xlabel('Time $t$')
+ylabel('Reconstrcuted IS-TVF $G_{/alpha_m}^{(13)}$')
+set(gca,'FontSize',16)
+set(gcf,'Position',[100 100 560 300])
+exportgraphics(f2,'../06_results/figures/PCA_compare_ISTVF.pdf','Resolution',300)
 
-%% Figure 7 Plot Histogram
+%%%% --- Figure 6c(S3b) Reconstruction of Posture Sequences ---
+Xre_Seq = ISTVF_to_posture(CIre,V_ref,W_ref,mpos);                          % Sequential
+Xre_Mpca = ISTVF_to_posture(CMPCA,V_ref,W_ref,mpos);                        % MPCA
+
+[~, len1] = skeleton_to_posture(Ref_pos_data, tree);
+skeleton_data_PCA_0 = posture_to_skeleton(aligned{8}, len1, tree); 
+skeleton_data_SeqPCA = posture_to_skeleton(Xre_Seq{8}, len1, tree);
+skeleton_data_MPCA = posture_to_skeleton(Xre_Mpca{8}, len1, tree);   
+
+f3 = figure;
+DrawSkeletonSequenceAction(skeleton_data_PCA_0,30,'r','b',16, 1, -2, 'Original', 0:300);
+DrawSkeletonSequenceAction(skeleton_data_SeqPCA,30,'r','k',16, 1, -4, {'Sequential','PCA'});
+DrawSkeletonSequenceAction(skeleton_data_MPCA,30,'r','k',16, 1, -6, 'MPCA');
+set(gcf,'Position',[100 100 900 480])
+exportgraphics(f3,'../06_results/figures/PCA_reconstructed_compare.pdf','Resolution',300) 
+
+%% === Figure 7 Histogram of Coefficients using Sequential PCA ===
 [~,D2,D1] = size(S);
 SS = reshape(S,[],D1*D2);
 
-% Compute Mean and Variance of PCA Scores
+%%%% --- Compute Mean and Variance of PCA Scores ---
 % Mean
 MS = mean(SS);
 MS = reshape(MS,[D2,D1]);
@@ -48,6 +80,7 @@ CS = cov(SS);
 CS = diag(CS);
 CS1 = reshape(CS,[D2,D1]);
 
+%%%% --- Histogram Plot ---
 f1 = figure;
 h = tiledlayout(3,3, 'Padding', 'compact', 'TileSpacing', 'compact'); 
 for d1=1:3    
@@ -72,40 +105,9 @@ ylabel(h,'Density','interpreter','latex')
 set(gcf,'Position',[50 50 750 400])
 exportgraphics(f1,'../06_results/figures/histogram.pdf','Resolution',300)
 
-%% Figure 6 Dimension Reduction Compare
-%% Figure 6a Reconstruction of ISTVF Functions
-% use the 13th element of the ISTVF for the 8th sequence observation as an example 
-f2 = figure;
-plot(CIS(:,8,13),'linewidth',2)                                             % Original 
-hold on
-plot(CIre(:,8,13),'linewidth',2)                                            % Sequential Reconstruction
-hold on
-plot(CMPCA(:,8,13),'linewidth',2)                                           % MPCA Reconstruction
-legend('Original','Sequential PCA','MPCA')      
-xlabel('Time $t$')
-ylabel('Reconstrcuted IS-TVF $G_{/alpha_m}^{(13)}$')
-set(gca,'FontSize',16)
-set(gcf,'Position',[100 100 560 300])
-exportgraphics(f2,'../06_results/figures/PCA_compare_ISTVF.pdf','Resolution',300)
-
-%% Figure 6c Reconstruction of Posture Sequences
-Xre_Seq = ISTVF_to_posture(CIre,V_ref,W_ref,mpos);                          % Sequential
-Xre_Mpca = ISTVF_to_posture(CMPCA,V_ref,W_ref,mpos);                        % MPCA
-
-[~, len1] = skeleton_to_posture(Ref_pos_data, tree);
-skeleton_data_PCA_0 = posture_to_skeleton(aligned{8}, len1, tree); 
-skeleton_data_SeqPCA = posture_to_skeleton(Xre_Seq{8}, len1, tree);
-skeleton_data_MPCA = posture_to_skeleton(Xre_Mpca{8}, len1, tree);   
-
-f3 = figure;
-DrawSkeletonSequenceAction(skeleton_data_PCA_0,30,'r','b',16, 1, -2, 'Original', 0:300);
-DrawSkeletonSequenceAction(skeleton_data_SeqPCA,30,'r','k',16, 1, -4, {'Sequential','PCA'});
-DrawSkeletonSequenceAction(skeleton_data_MPCA,30,'r','k',16, 1, -6, 'MPCA');
-set(gcf,'Position',[100 100 900 480])
-exportgraphics(f3,'../06_results/figures/PCA_reconstructed_compare.pdf','Resolution',300) 
-
-%% Figure 6b Reconstrcution Error over Reduced Dimensions
-%% Sequential PCA
+%% === Reconstrcution Error over Reduced Dimensions (Figure 6b) ===
+%%%% --- Sequential PCA ---
+% a.) Sequential PCA over Different Dimensions
 for k1 = 1:41   % Loop over Spatial Dimension 0 to 40
     if k1 == 1  % Mean Posture Only (Spatial Dimension of 0)
         ZM = reshape(CIS,[Ty*M,40]);
@@ -145,16 +147,18 @@ for k1 = 1:41   % Loop over Spatial Dimension 0 to 40
     end
 end
 
-%% Compute Mean Reconstruction Error
+% b). Compute Mean Reconstruction Error
 dpca_mean = squeeze(mean(dpca(:,1:41,1:61)));
 
+% c). Find the Unique Reduced Dimension
 d1 = 0:40;
 d2 = 0:60;
 d = d1'*d2;
 d(2:end,1) = 1:40;
-di = unique(d);     % Find the Unique Dimension
+di = unique(d);     
 
-%% MPCA
+%%%% --- MPCA ---
+% a). MPCA over Different Maintained Total Variance
 for k = 1:21   % Loop over maintained total variance from 80% to 100% 
     [Zf,Mf,Uf] = SeqMPCA(CIS,79+k);
     
@@ -169,15 +173,15 @@ for k = 1:21   % Loop over maintained total variance from 80% to 100%
         dmpca(k,m) = dist_seq_to_seq(Xc{m},Xre_Mpca{m});
     end
     [DD1,DD2,~] = size(Zf);
-    K(k) = DD1*DD2;     % Get the reduced dimension
+    K(k) = DD1*DD2;     % Get the total reduced dimension
 end
 
-%% Find Minimum Reconstruction of Sequential PCA with Equivalent Reduced Dimension to the MPCA Results
+% b). Find Minimum Reconstruction of Sequential PCA with Equivalent Reduced Dimension to the MPCA Results
 for i =1:length(K)-2
     dpcak(i) = min(dpca_mean(d==K(i)));
 end
 
-%% Plot Error over Total Reduced Dimension
+%%%% --- Plot Mean Error over Total Reduced Dimension ---
 f4 = figure;
 plot(K(1:19),mean(dmpca(1:19,:),2),'LineWidth',2)
 ylabel('Shape Error')
@@ -190,8 +194,8 @@ set(gca,'Fontsize',14)
 set(gcf,'Position',[100 100 560 300])
 exportgraphics(f4,'../06_results/figures/Compare_shape_error_over_d.pdf','Resolution',300)
 
-%% Figure 10 Sequential PCA Parameter Selection
-%% Figure 10b Mech Plot of the Reconstrcution Error
+%% === Sequential PCA Parameter Selection (Figure 10) ===
+%%%% --- Figure 10b Mech Plot of the Reconstrcution Error ---
 X1 = repmat(d1(2:end),60,1)';
 Y1 = repmat(d2(2:end),40,1);
 f5 = figure;
@@ -203,7 +207,8 @@ view(150,30)
 set(gca,'Fontsize',14)
 exportgraphics(f5,'../06_results/figures/mesh_SeqPCA_error_over_d1_d2.pdf','Resolution',300)
 
-%% Figure 10a Reconstruction over Funtional Dimensions with 2 fixed Spatial Dimension
+%%%% --- Figure 10a Reconstruction over Funtional Dimensions with 2 fixed Spatial Dimension ---
+% a). Compute the PCA and Reconstruction Error
 d1 = [5,10];        % Two Fixed Spatial Dimension Selection
 for i = 1:2
     k1 = d1(i);
@@ -234,7 +239,7 @@ for i = 1:2
     end
 end
 
-% Plot Average Error over Temporal Dimension
+% b). Plot Average Error over Temporal Dimension
 f6 = figure;
 plot([0:60],squeeze(mean(dfpca,2))./mean(squeeze(dfpca(1,:,:)),1),'LineWidth',2)
 set(gca,'Fontsize',14)
@@ -243,7 +248,7 @@ xlabel('Selection of $d_2$','Interpreter','latex')
 ylabel('Normalized Shape Error','Interpreter','latex')
 exportgraphics(f6,'../06_results/figures/SeqPCA_shape_error_over_d2.pdf','Resolution',300)
 
-%% Figure 10c Plot p-Value over Temporal Dimension
+%%%% --- Figure 10c Plot p-Value over Temporal Dimension ---
 f7 = figure;
 plot([0:5:60],p,'LineWidth',2)
 set(gca,'Fontsize',14)
@@ -253,7 +258,7 @@ title('$/alpha$ vs $/tilde{/alpha}$','Interpreter','latex')
 exportgraphics(f7,'pvalue_d2_originalVSreconstruction.pdf','Resolution',300)
 
 
-%% Table 1 Dimension Reduction Compare
+%% === Table 1 Dimension Reduction Compare Table ===
 load ../01_data/RWP_1_Outcome_300.mat
 
 [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(aligned);
@@ -261,48 +266,55 @@ load ../01_data/RWP_1_Outcome_300.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
 Result = zeros(4,3);
-%% 1. Sequential PCA
+%%%% --- 1. Sequential PCA ---
+% a). Apply Dimension Reduction
 % Spatial PCA
 D1 = 5;
 [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
 % FPCA
 D2 = 10;
 [Us,Vs,Ms,S,ef,ex,SigK] = FullfPCA(ZZ,D2);
+
+% b). Reconstruction
 % PCA Reconstruction
 CIre = PCAReconstruction(S,Us,Ms,UdZ,MuZ);
 % Posture Reconstruction
 Xre_Seq = ISTVF_to_posture(CIre,V_ref,W_ref,mpos);
 
+% c). Compute Error
 % Compute Reconstrcution Error
 for m = 1:M
     dm_spca(m) = dist_seq_to_seq(Xc{m},Xre_Seq{m});
 end
-
 % Mean Reconstruction Error
 Result(1,1) = D1;
 Result(1,2) = D2;
 Result(1,3) =  mean(dm_spca);
 
-%% 2. MPCA
+%%%% --- 2. MPCA ---
 addpath('./tensor_toolbox-v3.6/')
+% a). Apply Dimension Reduction
 [Zf,Mf,Uf] = SeqMPCA(CIS,90);
+
+% b). Reconstruction
 % MPCA Reconstruction
 CMPCA = double(ReMPCA(Zf,Uf,Mf));
 CMPCA = permute(CMPCA,[2,3,1]);
 % Posture Reconstruction
 Xre_Mpca = ISTVF_to_posture(CMPCA,V_ref,W_ref,mpos);
 
+% c). Compute Error
 % Compute Reconstrcution Error
 for m = 1:M
     dm_mpca(m) = dist_seq_to_seq(Xc{m},Xre_Mpca{m});
 end
-
 % Mean Reconstruction Error
 Result(2,1) = size(Zf,1);
 Result(2,2) = size(Zf,2);
 Result(2,3) =  mean(dm_mpca);
 
-%% 3. AE+FPCA
+%%%% --- 3. AE+FPCA ---
+% a). Apply Dimension Reduction
 % Train AE
 hiddenSize = D1;
 CIS_flatten = reshape(CIS, Ty*M,[]);
@@ -317,11 +329,10 @@ ae = trainAutoencoder(CIS_flatten', hiddenSize, ...
 % Spatial Dimension
 Z_AE_flattened = encode(ae, CIS_flatten')';
 Z_AE = reshape(Z_AE_flattened, Ty, M, []);
-
 % Temporal Dimension
 [Uf_AE,Vf_AE,Mf_AE,Sf_AE] = FullfPCA(Z_AE,D2);
 
-% Reconstruction
+% b). Reconstruction
 % FPCA Reconstruction
 for m = 1:M
     for k = 1:D1
@@ -329,28 +340,27 @@ for m = 1:M
         Z_AE_re(:,k,m) = Uf_AE(:,:,k)*RS'+Mf_AE(k,:)';    
     end 
 end
-
 % AE Decode
 Z_AE_re = permute(Z_AE_re, [1,3,2]);
 Z_AE_re_flattened = reshape(Z_AE_re, Ty*M,[]);
 
 CI_AE_flanttend = decode(ae,Z_AE_re_flattened')';
 CI_AE = reshape(CI_AE_flanttend,Ty,M,[]);
-
-% Posture Reconstruction
+% ISTVF Reconstruction
 Xre_AE = ISTVF_to_posture(CI_AE,V_ref,W_ref,mpos);
 
+% c). Compute Error
 % Compute Reconstruction Error
 for m = 1:M
     dm_ae(m) = dist_seq_to_seq(Xc{m},Xre_AE{m});
 end
-
 % Mean Reconstruction Error
 Result(3,1) = D1;
 Result(3,2) = D2;
 Result(3,3) =  mean(dm_ae);
 
-%% 4. VAE+FPCA
+%%%% --- 4. VAE+FPCA ---
+% a). Apply Dimension Reduction
 % Train VAE
 opts = struct('latentDim',D1);
 vae = trainVAE(CIS_flatten, opts);
@@ -359,6 +369,7 @@ Z_VAE = reshape(Z_VAE, Ty, M, []);
 % FPCA
 [Uf_VAE,Vf_VAE,Mf_VAE,Sf_VAE] = FullfPCA(Z_VAE,D2);
 
+% b). Reconstruction
 % FPCA Reconstruction
 for m = 1:M
     for k = 1:D1
@@ -366,22 +377,19 @@ for m = 1:M
         Z_VAE_re(:,k,m) = Uf_VAE(:,:,k)*RS'+Mf_VAE(k,:)';    
     end 
 end
-
 % VAE Decode
 Z_VAE_re = permute(Z_VAE_re, [1,3,2]);
 Z_VAE_re_flattened = reshape(Z_VAE_re, Ty*M,[]);
-
 CI_VAE_flanttend = vae.decode(Z_VAE_re_flattened);
 CI_VAE = reshape(CI_VAE_flanttend,Ty,M,[]);
-
-% Posture Reconstruction
+% ISTVF Reconstruction
 Xre_VAE = ISTVF_to_posture(CI_VAE,V_ref,W_ref,mpos);
 
+% c). Compute Error
 % Compute Reconstruction Error
 for m = 1:M
     dm_vae(m) = dist_seq_to_seq(Xc{m},Xre_VAE{m});
 end
-
 % Mean Reconstruction Error
 Result(4,1) = D1;
 Result(4,2) = D2;

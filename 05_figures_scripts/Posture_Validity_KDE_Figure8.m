@@ -7,7 +7,7 @@
 % clear 
 addpath('../03_metrics/')
 
-%% Load Worker Data as Example
+%% === Load Worker Data as Example ===
 X = [];
 for s = 1:5
     filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
@@ -15,9 +15,12 @@ for s = 1:5
     X = [X, aligned];
 end
 
-%% Exercise Data
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%% Exercise Data
 % load ../01_Data/MotionNew_Outcome_800.mat
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%%% --- Select Key Joints ---
 if tree(1,1) == 1                       % Exercise Motion
     I = 10;
     Test_Id(1,:) =  [5  8];             % Neck
@@ -43,7 +46,7 @@ elseif tree(1,1) == 21                  % Worker Motion
     Test_Id(9,:) =  [8  9];             % Left Knee 
 end
 
-% Collect individual postures
+%%%% --- Collect Individual Postures ---
 M = size(X,2);
 T = size(X{1},2);
 Y = [];
@@ -51,32 +54,34 @@ for i = 1:M
     Y = [Y X{i}];
 end
 
-% Sample N postures for training
+%%%% --- Sample N postures for training ---
 % N = M*T;
 N = 10000;
 idx = randperm(M*T);
 Ys = Y(:,idx(1:N),:);
 f = figure(100);
 tiledlayout(1,4,"TileSpacing","tight","Padding","tight")
+
+%%%% --- Kernel Desnsity Estimation
 for i = 1:I     % Loop over i-th key joint
+    % Step 1. Compute the Relative Coordinates
     for j = 1:N
-        % Compute the Relative Coordinates
         Z(j,:) = get_coordinate(squeeze(Ys(Test_Id(i,1),j,:))',squeeze(Ys(Test_Id(i,2),j,:))');
     end
-    % Mesh Grid for Empirical Estimation
+    % Step 2. Set Mesh Grid for Empirical Estimation
     [theta, phi] = meshgrid(linspace(0, pi, 150), linspace(0, 2*pi, 300));
     xq = sin(theta) .* cos(phi);
     yq = sin(theta) .* sin(phi);
     zq = cos(theta);
     query_points = [xq(:), yq(:), zq(:)];
 
-    % KDE Estimation 
+    % Step 3. Kernel Density Estimation 
     [f_hat, kappa] = spherical_kde(Z, [], query_points);    
     f_hat_grid = reshape(f_hat, size(xq));
-    % Confidence Region
+    % Step 4. Compute Confidence Region
     t_alpha = spherical_kde_confidence_region(Z, kappa, 0.05);
     
-    %% Figure 8 Visualization for Some Key Joints 
+    % Step 5. Visualization for Selected Key Joints (Figure 8)
     if ismember(i, [2, 4, 6, 8])
         nexttile
         % figure
@@ -99,6 +104,7 @@ for i = 1:I     % Loop over i-th key joint
     KernelVMF(i).t_alpha = t_alpha;
 end
 
+%%%% --- Plot Configuration ---
 lgd = legend('','Sample Points', 'Confidence Region','FontSize',16,'Location','north','Orientation','horizontal');
 lgd.Position = [0.25,0.88,0.44,0.12];
 set(f,"Position",[50 50 1000 300])

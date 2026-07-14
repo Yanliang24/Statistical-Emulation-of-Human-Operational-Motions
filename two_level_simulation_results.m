@@ -1,8 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % two_level_simulation_results - The code is to generate the tables for the
-% evaluation results, Table 2 to 6 in the main manuscript and Table 1 to 3
-% in the Supplementary Material
+% data emulation results, Table 7 in the main manuscript. 
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

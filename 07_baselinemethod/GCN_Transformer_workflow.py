@@ -40,8 +40,8 @@ class MotionGeneratorFromSeed(nn.Module):
         self.temporal_pos_enc = nn.Parameter(torch.randn(T_out, input_dim))
 
         self.decoder = nn.TransformerDecoder(
-            nn.TransformerDecoderLayer(d_model=input_dim, nhead=4),
-            num_layers=4
+            nn.TransformerDecoderLayer(d_model=input_dim, nhead=1, dim_feedforward=input_dim),
+            num_layers=1
         )
 
         self.output_layer = nn.Linear(input_dim, num_joints * in_channels)
@@ -73,15 +73,17 @@ def prepare_data_from_matlab(motion_cells):
     into a Torch tensor [B, T, J, C].
     """
     motion_sequences = []
-    # If MATLAB passes a cell array, it iterates as a list in Python
     for item in motion_cells:
-        # MATLAB [20, T, 3] -> Python [T, 20, 3]
         seq = np.array(item, dtype=np.float32).transpose(1, 0, 2)
         motion_sequences.append(torch.from_numpy(seq))
     
     return torch.stack(motion_sequences)
 
-def train_gcn_model(motion_cells, cond_data, seed_length, hidden_dim, epochs):
+def train_gcn_model(motion_cells, cond_data, A_matlab, seed_length, hidden_dim, epochs, random_seed):
+    seed_val = int(random_seed)
+    torch.manual_seed(seed_val)
+    np.random.seed(seed_val)
+
     # Convert data inside Python
     motion_batch = prepare_data_from_matlab(motion_cells)
     condition = torch.tensor(np.array(cond_data)).float()
@@ -92,13 +94,15 @@ def train_gcn_model(motion_cells, cond_data, seed_length, hidden_dim, epochs):
     seed = motion_batch[:, :s_len]
     target = motion_batch[:, s_len:]
     
-    A = torch.eye(J).unsqueeze(0)
+    A_np = np.array(A_matlab, dtype=np.float32)
+    A = torch.from_numpy(A_np).unsqueeze(0) 
+
     model = MotionGeneratorFromSeed(
         in_channels=C, num_joints=J, hidden_dim=int(hidden_dim), 
         A=A, T_out=target.shape[1], cond_dim=condition.shape[1]
     )
     
-    optimizer = optim.Adam(model.parameters(), lr=1e-3)
+    optimizer = optim.Adam(model.parameters(), lr=1e-3,weight_decay=1e-4)
     loss_fn = nn.MSELoss()
     
     model.train()
@@ -108,7 +112,8 @@ def train_gcn_model(motion_cells, cond_data, seed_length, hidden_dim, epochs):
         loss = loss_fn(output, target)
         loss.backward()
         optimizer.step()
-        print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}")
+        if epoch == 0 or (epoch + 1) % 20 == 0:
+            print(f"Epoch {epoch+1}/{epochs}, Loss: {loss.item():.4f}")
             
     return model
 

@@ -1,33 +1,33 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 % Simulation_Work_PWI - The code is to simulate sequences
-% using baseline model PWI descripbed in Sec. 5.2 using Worker
+% using baseline model PWI descripbed in Sec. 6.2 using Worker
 % dataset
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clear
 addpath('../02_functions/')
 addpath('../03_metrics/')
-num_runs = 10;
-num_sim = 100;
-%Random Setting
-rng(123456)
+
+num_runs = 10;          % Number of Runs
+num_sim = 100;          % NUmber of Simulation
+rng(123456)             % Random Setting
 
 for r = 1:num_runs
     Result = struct();
     Result.SimulatedData = cell(5, num_sim); % 5 subclasses
     Result.metrics = zeros(5, 11);      % 11 metrics
     for s = 1:5
-        % 1. Load Worker Dataset
+        %% === Load Worker Dataset ===
         filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
-        tic;
         X = aligned;   
         M = size(X,2);
         [~,Ty,~] = size(X{1});
         
-        % 2. Compute cross-sectional mean and variance
+        %% === Step 1. Compute Cross-Sectional Mean and Variance ===
         for t = 1:Ty
+            % Mean
             mpost = squeeze(X{1}(:,t,:));
             nIter = 25;
             for n = 1:nIter
@@ -39,7 +39,7 @@ for r = 1:num_runs
                 lik(n) = sum(V(:).^2);
             end
             Mpos(:,t,:) = mpost;
-            
+            % Variance
             for m = 1:M
                 X_mt = squeeze(X{m}(:, t, :)); 
                 V(:,m,:) = InverseExp_At_Posture(mpost,X_mt);
@@ -50,9 +50,8 @@ for r = 1:num_runs
             end
             Cpos{t} = Cpost;
         end
-        t1 = toc;
-        tic;
-        % 3. Generation
+
+        %% === Step 2. Simulation ===
         for k = 1:num_sim
             for t = 1:Ty
                 for i = 1:20               
@@ -69,10 +68,9 @@ for r = 1:num_runs
             end
             Xnew{k} = X_new;
         end
-
         Result.SimulatedData(s,:) = Xnew;
-        t2 = toc;
-        % 4. Evaluation
+        
+        %% === Step 3. Evaluation ===
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
 

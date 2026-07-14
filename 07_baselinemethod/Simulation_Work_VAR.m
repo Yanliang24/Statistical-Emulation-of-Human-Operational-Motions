@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Simulation_Work_GCN_Trans - The code is to simulate sequences
-% using baseline model GCN_Transformer descripbed in Sec. 5.2 using Worker
+% using baseline model GCN_Transformer descripbed in Sec. 6.2 using Worker
 % dataset
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -9,49 +9,43 @@
 addpath('../02_functions/')
 addpath('../03_metrics/')
 
-num_runs = 10;
-num_sim = 100;
-%Random Setting
-rng(123456)
+num_runs = 10;          % Number of Runs
+num_sim = 100;          % NUmber of Simulation
+rng(123456)             % Random Setting
 
 for r = 1:num_runs
     Result = struct();
     Result.SimulatedData = cell(5, num_sim); % 5 subclasses
     Result.metrics = zeros(5, 11);      % 11 metrics
     for s = 1:5
-        % 1. Load Worker Dataset
+        %% === Load Worker Dataset ===
         filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
         load(filename, 'aligned','tree')
-        tic;
         X = aligned;   
         M = size(X,2);
         [~,Ty,~] = size(X{1});
         
-        % 2. Compute ISTVF
+        %% === Step 1. Compute ISTVF ===
         [CIS,V_ref,W_ref,mpos,Xc,Yc] = FormISTVF(X);
     
-        % 3. Spatial PCA
+        %% === Step 2. Spatial PCA ===
         D1 = 10;
         [ZZ,MuZ,UdZ,SigZ] = SpatialPCA(CIS,D1);
         
-        % 4. Training
+        %% === Step 3. Training ===
         Z1 = squeeze(ZZ(:,1,:));
         ZTrain = Z1;
         [Ty,~,~] = size(CIS);
-        
         Mdl = varm(D1,4);
         EstMdl = estimate(Mdl,ZTrain);
         S = summarize(EstMdl);
-        t1 = toc;
 
-        tic;
-        % 5. Simulation    
+        %% === Step 4. Simulation ===    
         % Simulate spatial PCA coefficient
         for i = 1:num_sim
             Znew(:,:,i) = simulate(EstMdl,Ty);
-        end
-        
-        % 6. Sequence construction
+        end        
+        % Sequence construction
         for i = 1:num_sim
             CInew = Znew(:,:,i)*UdZ(:,1:D1)' + MuZ;
             Cnew = [CInew(1,:); diff(CInew)];
@@ -65,16 +59,15 @@ for r = 1:num_runs
             posture_new = STVF_Recon(Y_new, mpos);
             Xnew{i} = posture_new;
         end
-
         Result.SimulatedData(s,:) = Xnew;
-        t2 = toc;
-        % 7. Evaluation
+
+        %% === Step 5. Evaluation ===
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
-
         Result.metrics(s,:) = evaluation(X, Xnew, tree, KernelVMF,posturemode);
     end
-
+    
+    %% Save
     save_path = sprintf('../06_results/WorkerData/VAR/run_%d.mat', r);
     save(save_path, 'Result');
 end

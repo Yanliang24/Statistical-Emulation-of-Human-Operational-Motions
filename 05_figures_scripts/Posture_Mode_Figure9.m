@@ -7,8 +7,8 @@
 % clear 
 addpath('../02_functions/')
 
-%% Plot 9 Visualization of Clustering and Quantization
-% Load Worker Motion 1 as an Example
+%% === Plot 9 Visualization of Clustering and Quantization ===
+%%%% --- Load Worker Motion 1 as an Example
 load ../01_data/RWP_1_Outcome_300.mat
 load ../03_metrics/posture_modes_12.mat
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
@@ -16,10 +16,12 @@ set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 % Compute Mean Sequence
 XM = mean_posture_seq(aligned);
 
-%% 9b Posture Modes
+%% === 9b Posture Modes ===
+% Step 1. Setup the skelecton representation
 [~, len1] = skeleton_to_posture(Ref_pos_data, tree);
 skeleton_data = posture_to_skeleton(posturemode, len1, tree);
 
+% Step 2. Setup the plot configuration
 for i = 1:12
     [smin smax] = bounds(squeeze(skeleton_data(:,i,:)));
     mp = (smin+smax)/2;
@@ -45,6 +47,7 @@ x2 = max(x(:,2))+0.1;
 y2 = max(y(:,2))+0.1;
 z2 = max(z(:,2))+0.1;
 
+% Step 3. Final output
 h = figure;
 tiledlayout(3,4,"TileSpacing","tight","Padding","tight")
 for i =1:12
@@ -59,14 +62,14 @@ end
 set(h,'Position',[100 100 480 420])
 exportgraphics(h,'../06_results/figures/posture_mode_12.pdf','Resolution',300) 
 
-%% 9c Quantization Example
-% Quantization of Individual Sequences
+%% === 9c Quantization Example ===
+% Step 1. Compute Quantization of Individual Sequences
 for m = 1:M
     Xm = aligned{m};
     L(m,:) = quantization(Xm,posturemode);
 end
 
-% Quantization of Mean Sequence
+% Step 2. Compute Quantization of Mean Sequence
 for t = 1:301
     Pm = squeeze(XM(:,t,:));
     for i = 1:12
@@ -77,7 +80,7 @@ for t = 1:301
     Xmean(:,t,:) = posturemode(:,Idx,:);
 end
 
-% Plot Quantized Sequences
+% Step 3. Plot Quantized Sequences
 f1 = figure;
 hold on
 I = randperm(60,12);
@@ -94,8 +97,8 @@ set(gca,'FontSize',16)
 AX = gca;
 exportgraphics(AX,'../06_results/figures/ModePlot12_Original_motion12.pdf','Resolution',300)
 
-%% 9a Sorted Distance Matrix
-% Compute Distance Matrix of Trainig Data
+%% === 9a Sorted Distance Matrix ===
+% Step 1. Compute Distance Matrix of Trainig Data
 for i = 1:5000
     for j = 1:5000
         if i<j
@@ -108,7 +111,7 @@ for i = 1:5000
     end
 end
 
-% Sort the Distance Matrix by Cluster
+% Step 2. Sort the Distance Matrix by Cluster
 dist = D;
 
 numClust = max(data2clusterNew);
@@ -120,13 +123,12 @@ for i = 1:numClust
     sortIdx(startIdx:endIdx) = thisIdx(orderIdx);
     startIdx = startIdx + length(thisIdx);
 end
-% trainThisIdx = find(trainData2clusterNew==numClust+1);
 thisIdx = find(data2clusterNew==0);
 endIdx = startIdx + length(thisIdx) - 1;
 sortIdx(startIdx:endIdx) = thisIdx;
 distSorted = dist(sortIdx,sortIdx);
 
-% Plot Sorted Distance Matrix
+% Step 3. Plot Sorted Distance Matrix
 figure
 imagesc(distSorted)
 axis square

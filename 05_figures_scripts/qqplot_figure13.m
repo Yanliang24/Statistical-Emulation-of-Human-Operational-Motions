@@ -8,11 +8,10 @@ addpath('../02_functions/')
 
 set(0,'defaulttextinterpreter','latex', 'DefaultLegendInterpreter', 'latex')
 
-%% First Level: ISTVF/IG
+%% === First Level Model: ISTVF/IG ===
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_ISTVF_IG.mat
 
-
-%% Setup the plot
+%%%% --- Setup the plot ---
 i=1;
 figure(100)
 hold on;
@@ -27,7 +26,7 @@ ax3 = get(gca,'Children');x3 = get(ax3,'XData');y3= get(ax3,'YData');
 x3 = cell2mat(x3(1)); y3 = cell2mat(y3(1));
 hold off
 
-%% This is the desired output
+%%%% --- This is the desired output ---
 xmax = max([max(y1),max(y2),max(y3),max(x1),max(x2),max(x3)]);
 xmin = min([min(y1),min(y2),min(y3),min(x1),min(x2),min(x3)]);
 f = figure(1);
@@ -39,11 +38,11 @@ ylim(x_limits)
 title({'Level One Simulation:', '{/it IS-TVF/SequentialPCA/IG}'}, 'interpreter','latex')
 set(gca,'FontSize',16)
 
-%% First Level: SIEM/IG
+%% === First Level Model: SIEM/IG ===
 clear x1 x2 x3 y1 y2 y3 xmax xmin
 load ../06_results/TwoLevelSimulation/LevelTwo/SimLevelTwoTest_SIEM_IG.mat
 
-%% Setup the plot
+%%%% --- Setup the plot ---
 i=1;
 figure(200)
 hold on;
@@ -58,7 +57,7 @@ ax3 = get(gca,'Children');x3 = get(ax3,'XData');y3 = get(ax3,'YData');
 x3 = cell2mat(x3(1)); y3 = cell2mat(y3(1));
 hold off
 
-%% This is the desired output
+%%%% --- This is the desired output ---
 xmax = max([max(y1),max(y2),max(y3),max(x1),max(x2),max(x3)]);
 xmin = min([min(y1),min(y2),min(y3),min(x1),min(x2),min(x3)]);
 figure(1);

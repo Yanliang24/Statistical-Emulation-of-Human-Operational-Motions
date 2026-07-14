@@ -1,66 +1,60 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % 
 % Simulation_Work_LSTM - The code is to simulate sequences
-% using baseline model LSTM descripbed in Sec. 5.2 using Worker
+% using baseline model LSTM descripbed in Sec. 6.2 using Worker
 % dataset
 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %clear
 addpath('../02_functions/')
 addpath('../03_metrics/')
-num_runs = 10;
-% Random Setting
-rng(123456)
+num_runs = 10;      % Number of Runs           
+rng(123456)         % Random Setting
 
 All_Results = struct(); 
 
+%% === Load Python Functions ===
 % Ensure Python is in path
 if count(py.sys.path, pwd) == 0
     insert(py.sys.path, int32(0), pwd);
 end
-
+% Load LSTM
 bridge = py.importlib.import_module('LSTM_workflow');
 % py.importlib.reload(bridge);
 
-%% Loop through each Dataset
-for s = 1:5
-    % 1. Load Worker Dataset
+for s = 1:5         % Loop through each Dataset
+    %% === Load Worker Dataset ===
     filename = sprintf('../01_data/RWP_%d_Outcome_300.mat', s);   
     load(filename, 'aligned','tree')
     
-    % 2. Train Model
-    tic;
-    fprintf('Training model for dataset %d...\n', s);
-    trained_model = bridge.train_motion_model(aligned);
-    t1 = toc;
-    % Temporary storage for the 10 runs of this specific dataset
+    fprintf('Training model for dataset %d...\n', s);   
     result_runs = zeros(num_runs, 11);
     
-    % 3. Loop over Simulations
-    for r = 1:num_runs
-        tic;
+    for r = 1:num_runs          % Loop over Runs
         fprintf('  - Run %d/10 (Seed: %d)\n', r, r);
-        % Run simulation with specific seed
-        py_sims = bridge.simulate_motion(trained_model, aligned, r);
-        
-        % Convert back to MATLAB (List of NumPy -> Cell of Doubles)
+        %% === Step 1. Train Model ===
+        trained_model = bridge.train_motion_model(aligned,r);
+
+        %% === Step 2. Simulation with Specific Seed ===
+        % a). Simulation
+        py_sims = bridge.simulate_motion(trained_model, aligned, r);        
+        % b). Convert back to MATLAB
         sim_data = cell(py_sims);
         for m = 1:length(sim_data)
             sim_data{m} = double(sim_data{m});
             sim_data{m} = re_normalize(sim_data{m});
         end
-        t2 = toc;
 
-        % 4. Evaluation
+        %% === Step 3. Evaluation ===
         load('../03_metrics/posture_modes_12.mat','posturemode')
         load('../03_metrics/Estimated_ROW.mat', 'KernelVMF')
         result_runs(r,:) = evaluation(aligned, sim_data, tree, KernelVMF, posturemode);
-        Xnew(r,:) = sim_data;
-        
+        Xnew(r,:) = sim_data;     
+        clear trainedModel py_sims sim_data;
     end
     
-    % Store Summary and Clean Up
-    % Convert cell to matrix to calculate mean of the 10 runs
+    %% === Store Summary and Clean Up ===
+    % Compute mean of the 10 runs
     Dataset = strcat('Dataset',num2str(s));
     All_Results.(Dataset).mean_score = mean(result_runs);
     All_Results.(Dataset).raw_scores = result_runs;
@@ -70,6 +64,6 @@ for s = 1:5
     clear aligned trained_model py_sims sim_data result_runs;
 end
 
-% Final Save
+%% Final Save
 save('../06_results/WorkerData/Other/LSTM_Worker_Results.mat', 'All_Results');
 fprintf('\nAll datasets processed successfully.\n');
